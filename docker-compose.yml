@@ -1,0 +1,89 @@
+---
+#========================================================================
+# Copyright Universidade Federal do Espirito Santo (Ufes)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# 
+# This program is released under license GNU GPL v3+ license.
+#
+#========================================================================
+
+version: '3.8'
+
+services:
+
+    # ldap server
+    ldap:
+        image: osixia/openldap:1.3.0
+        container_name: ldap
+        volumes:
+            - ./ldap:/container/service/slapd/assets/config/bootstrap/ldif/custom
+        # command: --copy-service -l debug
+        command: --copy-service
+        environment: 
+            LDAP_ORGANISATION: 'DI'
+            LDAP_DOMAIN: 'inf.ufes.br'
+            LDAP_BASE_DN: 'dc=inf,dc=ufes,dc=br'
+            LDAP_ADMIN_PASSWORD: 'ldappw'
+            TZ: America/Sao_Paulo
+        ports:
+            - 389:389
+
+    # ldap account manager
+    lam:
+        image: ldapaccountmanager/lam:stable
+        container_name: lam
+        ports:
+            - 8081:80
+        environment: 
+            LDAP_DOMAIN: 'inf.ufes.br'
+            LDAP_BASE_DN: 'dc=inf,dc=ufes,dc=br'
+            LDAP_SERVER: 'ldap://ldap:389'
+            LDAP_USER: 'cn=admin,dc=inf,dc=ufes,dc=br'
+            LAM_PASSWORD: 'ldappw'
+            LDAP_ADMIN_PASSWORD: 'ldappw'
+            LDAP_ORGANISATION: 'DI'
+            TZ: America/Sao_Paulo
+        depends_on:
+            - ldap
+
+    # web app
+    boca-web:
+        image: ghcr.io/joaofazolo/boca-docker/boca-web:latest
+        environment:
+            # database configuration
+            # privileged user password
+            - BOCA_DB_SUPER_PASSWORD=superpass
+            #######################
+            # TO BE REVIEWED
+            #######################
+            # specifies the authentication method to use. The possible choices
+            # are summarized here:
+            #  - password: require the user to supply a password
+            #  - ldap: authenticate using a LDAP server
+        ports: 
+            - 8001:80
+
+    # # online judge
+    # boca-jail:
+    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:latest
+    #     privileged: true
+
+    # database
+    boca-db:
+        image: postgres:14-alpine
+        environment:
+            # database configuration
+            # privileged user password
+            - POSTGRES_PASSWORD=superpass

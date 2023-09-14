@@ -1,0 +1,12 @@
+{ 
+    "docker.commands.composeUp": [
+        {
+            "template": "docker compose up"
+        }
+    ],
+    "docker.commands.composeDown": [
+        {
+            "template": "docker compose down"
+        }
+    ]
+}
