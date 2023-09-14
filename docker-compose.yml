@@ -74,6 +74,12 @@ services:
             #  - ldap: authenticate using a LDAP server
         ports: 
             - 8001:80
+        volumes:
+            - ./src/index.php:/var/www/boca/src/index.php
+            - ./src/flog.php:/var/www/boca/src/flog.php
+            - ./src/fcontest.php:/var/www/boca/src/fcontest.php
+            - ./src/site/header.php:/var/www/boca/src/site/header.php
+            - ./src/admin/user.php:/var/www/boca/src/admin/user.php
 
     # # online judge
     # boca-jail:
