@@ -79,8 +79,9 @@ services:
             - LDAP_BASE_DN=dc=inf,dc=ufes,dc=br
             - LDAP_USER=cn=admin,dc=inf,dc=ufes,dc=br
             - LDAP_PASSWORD=ldappw
-            # ldap user in charge of managing contests on this BOCA instance
-            - BOCA_ADMIN_USER=professorum
+            # If unspecified then creates a default system and admin user
+            - BOCA_SYSTEM_USER=professorum
+            - BOCA_ADMIN_USER=professordois
         ports: 
             - 8001:80
         volumes:

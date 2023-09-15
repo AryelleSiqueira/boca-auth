@@ -135,7 +135,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 
 	$authMode = getenv("BOCA_AUTH_METHOD");
 
-	if ($name == "system" && $authMode == 'ldap') {
+	if (($name == "system" || $name == "admin") && $authMode == 'ldap') {
 		$p = $a["userpassword"];
 		$pass = myhash($pass);
 	}

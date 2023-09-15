@@ -198,10 +198,13 @@ function DBFakeContest() {
 	DBRenewSiteTime($param, $c);
 	$cf = globalconf();
 	$pass = myhash($cf["basepass"]);
+
+	$username = getenv("BOCA_SYSTEM_USER") ? getenv("BOCA_SYSTEM_USER") : "system";
+
 	DBExec($c, "insert into usertable (contestnumber, usersitenumber, usernumber, username, userfullname, ".
 		"userdesc, usertype, userenabled, usermultilogin, userpassword, userip, userlastlogin, usersession, ".
 		"userlastlogout, userpermitip) ".
-		"values (0, 1, 1, 'system', 'Systems', NULL, 'system', 't', ".
+		"values (0, 1, 1, '$username', 'Systems', NULL, 'system', 't', ".
            "'t', '$pass', NULL, NULL, '', NULL, NULL)", "DBFakeContest(insert system user)");
 	DBExec($c, "commit work");
 }
@@ -1162,11 +1165,8 @@ function DBNewSite ($contest, $c=null, $param=array()) {
 	$cf=globalconf();
 	$admpass = myhash($cf["basepass"]);
 
-	$username = 'admin';
-
-    if (getenv(BOCA_AUTH_METHOD) == 'ldap') {
-        $username = getenv(BOCA_ADMIN_USER);
-    }
+	$username = getenv(BOCA_ADMIN_USER) ? getenv(BOCA_ADMIN_USER) : 'admin';
+	
 	DBExec($c, "insert into usertable ".
 		"(contestnumber, usersitenumber, usernumber, username, userfullname, " .
 		"userdesc, usertype, userenabled, usermultilogin, userpassword, userip, userlastlogin, ".
