@@ -1162,11 +1162,16 @@ function DBNewSite ($contest, $c=null, $param=array()) {
 	$cf=globalconf();
 	$admpass = myhash($cf["basepass"]);
 
+	$username = 'admin';
+
+    if (getenv(BOCA_AUTH_METHOD) == 'ldap') {
+        $username = getenv(BOCA_ADMIN_USER);
+    }
 	DBExec($c, "insert into usertable ".
 		"(contestnumber, usersitenumber, usernumber, username, userfullname, " .
 		"userdesc, usertype, userenabled, usermultilogin, userpassword, userip, userlastlogin, ".
 		"usersession, usersessionextra, userlastlogout, userpermitip, updatetime) values " .
-		"($contest, $number, 1000, 'admin', 'Administrator', NULL, 'admin', ".
+		"($contest, $number, 1000, '$username', 'Administrator', NULL, 'admin', ".
 		   "'t', 't', '$admpass', NULL, NULL, '', '', NULL, NULL, $updatetime)");
 	$param=array();
 	$param['contest']=$contest;

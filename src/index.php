@@ -31,6 +31,9 @@ if($_SESSION["locr"]=="/") $_SESSION["locr"] = "";
 
 require_once("globals.php");
 require_once("db.php");
+require_once("ldap.php");
+
+$authMode = getenv("BOCA_AUTH_METHOD");
 
 if (!isset($_GET["name"])) {
 	if (ValidSession())
@@ -73,6 +76,19 @@ require_once('version.php');
 <link rel=stylesheet href="Css.php" type="text/css">
 <script language="JavaScript" src="sha256.js"></script>
 <script language="JavaScript">
+
+function submitForm() {
+    const authMode = "<?php echo $authMode; ?>";
+
+    if (!authMode || authMode == 'password') {
+      computeHASH();
+    } else {
+      document.form1.method = 'post';
+      document.form1.action = 'index.php';
+
+      document.form1.submit();
+    }
+}
 function computeHASH()
 {
 	var userHASH, passHASH;
@@ -85,9 +101,10 @@ function computeHASH()
 </script>
 <?php
 if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
-  if(isset($_GET["name"]) && $_GET["name"] != "" ) {
-	$name = $_GET["name"];
-	$password = $_GET["password"];
+  if((isset($_GET["name"]) && $_GET["name"] != "") || (isset($_POST["name"]) && $_POST["name"] != "")) {
+  $name = isset($_GET["name"]) ? $_GET["name"] : $_POST["name"];
+  $password = isset($_GET["password"]) ? $_GET["password"] : $_POST["password"];
+  
 	$usertable = DBLogIn($name, $password);
 	if(!$usertable) {
 		ForceLoad("index.php");
@@ -123,7 +140,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
 <table width="100%" height="100%" border="0">
   <tr align="center" valign="middle"> 
     <td> 
-      <form name="form1" action="javascript:computeHASH()">
+      <form name="form1" action="javascript:submitForm()">
         <div align="center"> 
           <table border="0" align="center">
             <tr> 
