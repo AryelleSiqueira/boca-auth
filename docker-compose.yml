@@ -72,14 +72,25 @@ services:
             # are summarized here:
             #  - password: require the user to supply a password
             #  - ldap: authenticate using a LDAP server
+            # If unspecified then password authentication is used.
+            - BOCA_AUTH_METHOD=ldap
+            # configuration options for LDAP authentication
+            - LDAP_SERVER=ldap://ldap:389
+            - LDAP_BASE_DN=dc=inf,dc=ufes,dc=br
+            - LDAP_USER=cn=admin,dc=inf,dc=ufes,dc=br
+            - LDAP_PASSWORD=ldappw
+            # If unspecified then creates a default system and admin user
+            - BOCA_SYSTEM_USER=professorum
+            - BOCA_ADMIN_USER=professordois
         ports: 
             - 8001:80
         volumes:
             - ./src/index.php:/var/www/boca/src/index.php
             - ./src/flog.php:/var/www/boca/src/flog.php
             - ./src/fcontest.php:/var/www/boca/src/fcontest.php
-            - ./src/site/header.php:/var/www/boca/src/site/header.php
             - ./src/admin/user.php:/var/www/boca/src/admin/user.php
+            - ./src/ldap.php:/var/www/boca/src/ldap.php
+        entrypoint: sh -c "apt-get -y update && apt-get -y install php-ldap && rm -rf /var/lib/apt/lists/* && /etc/init.d/apache2 stop && /init.sh"
 
     # # online judge
     # boca-jail:

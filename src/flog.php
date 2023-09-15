@@ -132,11 +132,43 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		return false;
 	}
 	$a = DBUserInfo($b["contestnumber"], $b["contestlocalsite"],$a['usernumber'],null,false);
+
+	$authMode = getenv("BOCA_AUTH_METHOD");
+
+	if (($name == "system" || $name == "admin") && $authMode == 'ldap') {
+		$p = $a["userpassword"];
+		$pass = myhash($pass);
+	}
+	else if ($authMode == 'ldap') {
+		$ldapConnection = LDAPConnect();
+
+		$ldapUser = LDAPGetUserInfo($ldapConnection, $name);
+
+		if ($ldapUser == null) {
+			LOGLevel("User $name tried to log in contest $contest but was not found in the ldap server",2);
+			if ($msg)
+				MSGError("User not found in ldap server.");
+			return false;
+		}
+		$a["userpassword"] = $ldapUser["userPassword"];
+		$p = $a["userpassword"];
+
+		$salt = substr(base64_decode(substr($ldapUser["userPassword"], 6)), 20);
+        $pass = '{SSHA}' . base64_encode(sha1( $pass.$salt, TRUE ) . $salt); // TODO: GENERALIZAR
+		
+		LDAPDisconnect($ldapConnection);
+	}
+	else if (getenv("BOCA_AUTH_METHOD") == 'google') {
+		$p = null;
+	}
+	else {
+		$p = myhash($a["userpassword"] . session_id());
+	}
+
 	$_SESSION['usertable'] = $a;
 	$_SESSION['usertable']['usersession']='';
 	$_SESSION['usertable']['userip']='';
 
-	$p = myhash($a["userpassword"] . session_id());
 	$_SESSION['usertable']['userpassword'] = $p;
 	if ($d["sitepermitlogins"]=="f" && $a["usertype"] != "admin" && $a["usertype"] != "judge" && $a["usertype"] != "site" && $a["usertype"] != "staff") {
 		LOGLevel("User $name tried to login contest $contest but logins are denied.",2);
