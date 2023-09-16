@@ -32,8 +32,11 @@ if($_SESSION["locr"]=="/") $_SESSION["locr"] = "";
 require_once("globals.php");
 require_once("db.php");
 require_once("ldap.php");
+require_once("google-client.php");
 
 $authMode = getenv("BOCA_AUTH_METHOD");
+
+if ($authMode == 'google') $googleClient = new GoogleClient();
 
 if (!isset($_GET["name"])) {
 	if (ValidSession())
@@ -100,34 +103,56 @@ function computeHASH()
 }
 </script>
 <?php
+$googleAuthorized = $authMode == 'google' && $googleClient->authorized();
+
 if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
-  if((isset($_GET["name"]) && $_GET["name"] != "") || (isset($_POST["name"]) && $_POST["name"] != "")) {
-  $name = isset($_GET["name"]) ? $_GET["name"] : $_POST["name"];
-  $password = isset($_GET["password"]) ? $_GET["password"] : $_POST["password"];
-  
-	$usertable = DBLogIn($name, $password);
-	if(!$usertable) {
-		ForceLoad("index.php");
-	}
-	else {
-		if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
-			ForceLoad("index.php");
-		if($ct["contestlocalsite"]==$ct["contestmainsite"]) $main=true; else $main=false;
-		if(isset($_GET['action']) && $_GET['action'] == 'transfer') {
-			echo "TRANSFER OK";
-		} else {
-			if($main && $_SESSION["usertable"]["usertype"] == 'site') {
-				MSGError('Direct login of this user is not allowed');
-				unset($_SESSION["usertable"]);
-				ForceLoad("index.php");
-				exit;
-			}
-			echo "<script language=\"JavaScript\">\n";
-			echo "document.location='" . $_SESSION["usertable"]["usertype"] . "/index.php';\n";
-			echo "</script>\n";
-		}
-		exit;
-	}
+  if((isset($_GET["name"]) && $_GET["name"] != "") || (isset($_POST["name"]) && $_POST["name"] != "") || $googleAuthorized) {
+    
+    if ($googleAuthorized) {
+      $userData = $googleClient->data;
+      $username = str_replace(".", "", substr($userData->email, 0, strpos($userData->email, '@')));
+
+      $allowedDomains = getenv("AUTH_ALLOWED_DOMAINS");
+
+      if ($allowedDomains) {
+        if (in_array($userData->hd, explode(",", $allowedDomains))) {
+          $usertable = DBLogIn($username, null);
+        } else {
+          MSGError('Usuário não autorizado.');
+        }
+      } else {
+        $usertable = DBLogIn($username, null);
+      }
+    } 
+    else {
+      $name = isset($_GET["name"]) ? $_GET["name"] : $_POST["name"];
+      $password = isset($_GET["password"]) ? $_GET["password"] : $_POST["password"];
+      
+      $usertable = DBLogIn($name, $password);
+    }
+    
+    if(!$usertable) {
+      ForceLoad("index.php");
+    }
+    else {
+      if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
+        ForceLoad("index.php");
+      if($ct["contestlocalsite"]==$ct["contestmainsite"]) $main=true; else $main=false;
+      if(isset($_GET['action']) && $_GET['action'] == 'transfer') {
+        echo "TRANSFER OK";
+      } else {
+        if($main && $_SESSION["usertable"]["usertype"] == 'site') {
+          MSGError('Direct login of this user is not allowed');
+          unset($_SESSION["usertable"]);
+          ForceLoad("index.php");
+          exit;
+        }
+        echo "<script language=\"JavaScript\">\n";
+        echo "document.location='" . $_SESSION["usertable"]["usertype"] . "/index.php';\n";
+        echo "</script>\n";
+      }
+      exit;
+    }
   }
 } else {
   echo "<script language=\"JavaScript\">\n";
@@ -173,6 +198,11 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
           </table>
         </div>
       </form>
+      <?php 
+        if ($authMode == 'google') {
+          echo '<a href="'. $googleClient->generateAuthUrl() .'">Login with Google</a>';
+        }
+      ?>
     </td>
   </tr>
 </table>

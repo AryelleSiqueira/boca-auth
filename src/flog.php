@@ -135,7 +135,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 
 	$authMode = getenv("BOCA_AUTH_METHOD");
 
-	if (($name == "system" || $name == "admin") && $authMode == 'ldap') {
+	if (($name == "system" || $name == "admin") && ($authMode == 'ldap' && $authMode == 'google')) {
 		$p = $a["userpassword"];
 		$pass = myhash($pass);
 	}
@@ -158,8 +158,9 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		
 		LDAPDisconnect($ldapConnection);
 	}
-	else if (getenv("BOCA_AUTH_METHOD") == 'google') {
+	else if ($authMode == 'google') {
 		$p = null;
+		$pass = null;
 	}
 	else {
 		$p = myhash($a["userpassword"] . session_id());
