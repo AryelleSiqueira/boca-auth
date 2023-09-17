@@ -1165,7 +1165,7 @@ function DBNewSite ($contest, $c=null, $param=array()) {
 	$cf=globalconf();
 	$admpass = myhash($cf["basepass"]);
 
-	$username = getenv(BOCA_ADMIN_USER) ? getenv(BOCA_ADMIN_USER) : 'admin';
+	$username = getenv("BOCA_ADMIN_USER") ? getenv("BOCA_ADMIN_USER") : 'admin';
 	
 	DBExec($c, "insert into usertable ".
 		"(contestnumber, usersitenumber, usernumber, username, userfullname, " .
