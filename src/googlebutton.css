@@ -1,0 +1,21 @@
+.google-login-button {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+    background-color: transparent; 
+    color: black; 
+    border: 1px solid #2d2f31;
+    width: fit-content;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 10px;
+}
+.google-login-button:hover {
+    background-color: #0000000f;
+}
+.google-icon {
+    width: 25px;
+}

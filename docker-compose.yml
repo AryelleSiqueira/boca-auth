@@ -95,7 +95,8 @@ services:
             - ./src/fcontest.php:/var/www/boca/src/fcontest.php
             - ./src/admin/user.php:/var/www/boca/src/admin/user.php
             - ./src/ldap.php:/var/www/boca/src/ldap.php
-            - ./src/google-client.php:/var/www/boca/src/google-client.php
+            - ./src/googleclient.php:/var/www/boca/src/googleclient.php
+            - ./src/googlebutton.css:/var/www/boca/src/googlebutton.css
             - ./credentials:/var/www/boca/credentials
         entrypoint: sh -c "apt-get -y update && apt-get -y install php-ldap curl unzip php-curl && curl -sS https://getcomposer.org/installer -o composer-setup.php && php composer-setup.php --install-dir=/usr/local/bin --filename=composer && composer self-update && composer require google/apiclient && rm -rf /var/lib/apt/lists/* && /etc/init.d/apache2 stop && /init.sh"
 

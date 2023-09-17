@@ -32,7 +32,7 @@ if($_SESSION["locr"]=="/") $_SESSION["locr"] = "";
 require_once("globals.php");
 require_once("db.php");
 require_once("ldap.php");
-require_once("google-client.php");
+require_once("googleclient.php");
 
 $authMode = getenv("BOCA_AUTH_METHOD");
 
@@ -77,6 +77,7 @@ require_once('version.php');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet href="Css.php" type="text/css">
+<link rel=stylesheet href="googlebutton.css" type="text/css">
 <script language="JavaScript" src="sha256.js"></script>
 <script language="JavaScript">
 
@@ -199,9 +200,12 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         </div>
       </form>
       <?php 
-        if ($authMode == 'google') {
-          echo '<a href="'. $googleClient->generateAuthUrl() .'">Login with Google</a>';
-        }
+      if ($authMode == 'google')
+        echo 
+        '<a href="' . $googleClient->generateAuthUrl() . '" class="google-login-button">
+          <img src="https://accounts.scdn.co/sso/images/new-google-icon.72fd940a229bc94cf9484a3320b3dccb.svg" alt="Ícone do Google" class="google-icon">
+          Login com o Google
+        </a>'
       ?>
     </td>
   </tr>
