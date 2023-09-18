@@ -2,7 +2,7 @@
 
 ## Reporting a bug
 
-Please use the [Issues](https://github.com/aryellesiqueira/boca-ldap/issues/new) section to report security bugs/vulnerabilities. Include the requested information listed below (as much as you can provide) to help us better understand the nature and scope of the possible issue:
+Please use the [Issues](https://github.com/aryellesiqueira/boca-auth/issues/new) section to report security bugs/vulnerabilities. Include the requested information listed below (as much as you can provide) to help us better understand the nature and scope of the possible issue:
 
 * Type of issue
 * Full paths of source file(s) related to the manifestation of the issue
@@ -17,5 +17,5 @@ We'll strive to acknowledge and send a more detailed response to your report ASA
 ## Comments on this policy
 
 If you have suggestions on how this process could be improved please submit a
-[pull request](https://github.com/aryellesiqueira/boca-ldap/pulls) or
-[file an issue](https://github.com/aryellesiqueira/boca-ldap/issues/new) to discuss.
+[pull request](https://github.com/aryellesiqueira/boca-auth/pulls) or
+[file an issue](https://github.com/aryellesiqueira/boca-auth/issues/new) to discuss.
