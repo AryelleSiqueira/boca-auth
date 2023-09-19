@@ -111,7 +111,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
     
     if ($googleAuthorized) {
       $userData = $googleClient->data;
-      $username = str_replace(".", "", substr($userData->email, 0, strpos($userData->email, '@')));
+      $username = substr($userData->email, 0, strpos($userData->email, '@'));
 
       $allowedDomains = getenv("BOCA_AUTH_ALLOWED_DOMAINS");
 

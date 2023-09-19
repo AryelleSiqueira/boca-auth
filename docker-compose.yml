@@ -75,7 +75,7 @@ services:
             # If unspecified then creates default system and admin user
             # The default system and admin users always use the default authentication method (password)
             - BOCA_SYSTEM_USER=system
-            - BOCA_ADMIN_USER=aryellesiqueira
+            - BOCA_ADMIN_USER=aryelle.siqueira
             # specifies the authentication method to use. The possible choices
             # are summarized here:
             #  - password: require the user to supply a password
