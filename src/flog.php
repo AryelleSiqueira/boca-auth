@@ -190,12 +190,6 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		return false;
 	}
 
-	if(!ctype_alnum($name)) {
-	  LOGLevel("User $name tried to log in contest $contest but username is not alphanum.",2);
-	  if($msg) MSGError("Username must be alpha numeric.");
-	  unset($_SESSION["usertable"]);
-	  return false;
-	}
 	$ccode = trim($_SERVER['HTTP_USER_AGENT']);
 	$ds = DIRECTORY_SEPARATOR;
 	if($ds=="") $ds = "/";
