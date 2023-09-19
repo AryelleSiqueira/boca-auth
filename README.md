@@ -21,12 +21,12 @@ docker container ls -a
 ```sh
 git clone https://github.com/aryellesiqueira/boca-ldap.git
 cd boca-ldap
-docker compose up -d
+docker compose up -d --build
 ```
 
 Voilà! The application should be running now.
 
-* Open a web browser and visit the URL [http://localhost:8000/boca](http://localhost:8000/boca). First, create and activate a BOCA contest (user: _system_ | password: _boca_). Then, login as admin (user: _admin_ | password: _boca_) to manage users, problems, languages etc.
+* Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _system_ | password: _boca_). Then, login as admin (user: _admin_ | password: _boca_) to manage users, problems, languages etc.
 
 * To stop the application (considering that the shell is in the same directory):
 
