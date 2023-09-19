@@ -59,7 +59,7 @@ objectclass: person
 sn: Um
 uid: alunoum
 uidnumber: 10000
-userpassword: {SSHA}8I1N32/87Tk+1abiBdfIzxPV69xUWVdS
+userpassword: {SSHA}t2dIXD2higS0z5JVsNXUryR8tIBUWVdS
 
 dn: uid=alunodois,ou=aluno,dc=inf,dc=ufes,dc=br
 cn: Aluno Dois
@@ -75,7 +75,7 @@ objectclass: person
 sn: Dois
 uid: alunodois
 uidnumber: 10001
-userpassword: {SSHA}8I1N32/87Tk+1abiBdfIzxPV69xUWVdS
+userpassword: {SSHA}i+XF0mcD2odsnaV28H01hM6sTgF3M3Zx
 
 dn: uid=externoum,ou=externo,dc=inf,dc=ufes,dc=br
 cn: Externo Um
@@ -155,7 +155,7 @@ objectclass: person
 sn: Um
 uid: professorum
 uidnumber: 10006
-userpassword: {SSHA}jUH+aUVvWUcl2GGtP/3nhZFR7bhRRG9s
+userpassword: {SSHA}s0QsAGKOf5HlISa20oQn1/DXxWszZlA3
 
 dn: uid=professordois,ou=professor,dc=inf,dc=ufes,dc=br
 cn: Professor Dois

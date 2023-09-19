@@ -60,7 +60,10 @@ services:
 
     # web app
     boca-web:
-        image: ghcr.io/joaofazolo/boca-docker/boca-web:latest
+        image: boca-web-auth
+        build: 
+            context: .
+            dockerfile: Dockerfile
         environment:
             # database configuration
             # privileged user password
@@ -90,11 +93,10 @@ services:
             - ./src/fcontest.php:/var/www/boca/src/fcontest.php
             - ./src/admin/user.php:/var/www/boca/src/admin/user.php
             - ./src/ldap.php:/var/www/boca/src/ldap.php
-        entrypoint: sh -c "apt-get -y update && apt-get -y install php-ldap && rm -rf /var/lib/apt/lists/* && /etc/init.d/apache2 stop && /init.sh"
 
     # # online judge
     # boca-jail:
-    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:latest
+    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:1.2
     #     privileged: true
 
     # database
