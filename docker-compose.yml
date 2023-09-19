@@ -89,7 +89,7 @@ services:
             - LDAP_USER=cn=admin,dc=inf,dc=ufes,dc=br
             - LDAP_PASSWORD=ldappw
             # configuration options for Google authentication
-            - AUTH_ALLOWED_DOMAINS=edu.ufes.br,ufes.br
+            - BOCA_AUTH_ALLOWED_DOMAINS=edu.ufes.br,ufes.br
         ports: 
             - 8001:80
         volumes:

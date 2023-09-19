@@ -113,7 +113,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
       $userData = $googleClient->data;
       $username = str_replace(".", "", substr($userData->email, 0, strpos($userData->email, '@')));
 
-      $allowedDomains = getenv("AUTH_ALLOWED_DOMAINS");
+      $allowedDomains = getenv("BOCA_AUTH_ALLOWED_DOMAINS");
 
       if ($allowedDomains) {
         if (in_array($userData->hd, explode(",", $allowedDomains))) {
@@ -204,7 +204,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         echo 
         '<a href="' . $googleClient->generateAuthUrl() . '" class="google-login-button">
           <img src="https://accounts.scdn.co/sso/images/new-google-icon.72fd940a229bc94cf9484a3320b3dccb.svg" alt="Ícone do Google" class="google-icon">
-          Login com o Google
+          Sign in with Google
         </a>'
       ?>
     </td>
