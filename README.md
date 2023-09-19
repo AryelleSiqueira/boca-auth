@@ -1,4 +1,4 @@
-# boca-ldap
+# boca-auth
 
 ## Requirements
 
@@ -19,8 +19,8 @@ docker container ls -a
 * Clone this repo and run the following commands:
 
 ```sh
-git clone https://github.com/aryellesiqueira/boca-ldap.git
-cd boca-ldap
+git clone https://github.com/aryellesiqueira/boca-auth.git
+cd boca-auth
 docker compose up -d --build
 ```
 
@@ -55,4 +55,4 @@ This program is released under license GNU GPL v3+ license.
 
 ## Support
 
-Please report any issues with _boca-docker_ at [https://github.com/aryellesiqueira/boca-ldap/issues](https://github.com/aryellesiqueira/boca-ldap/issues)
+Please report any issues with _boca-docker_ at [https://github.com/aryellesiqueira/boca-auth/issues](https://github.com/aryellesiqueira/boca-auth/issues)
