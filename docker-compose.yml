@@ -60,7 +60,10 @@ services:
 
     # web app
     boca-web:
-        image: ghcr.io/joaofazolo/boca-docker/boca-web:latest
+        image: boca-web-auth
+        build: 
+            context: .
+            dockerfile: Dockerfile
         environment:
             # database configuration
             # privileged user password
@@ -98,11 +101,10 @@ services:
             - ./src/googleclient.php:/var/www/boca/src/googleclient.php
             - ./src/googlebutton.css:/var/www/boca/src/googlebutton.css
             - ./credentials:/var/www/boca/credentials
-        entrypoint: sh -c "apt-get -y update && apt-get -y install php-ldap curl unzip php-curl && curl -sS https://getcomposer.org/installer -o composer-setup.php && php composer-setup.php --install-dir=/usr/local/bin --filename=composer && composer self-update && composer require google/apiclient && rm -rf /var/lib/apt/lists/* && /etc/init.d/apache2 stop && /init.sh"
 
     # # online judge
     # boca-jail:
-    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:latest
+    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:1.2
     #     privileged: true
 
     # database

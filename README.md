@@ -1,4 +1,4 @@
-# boca-ldap
+# boca-auth
 
 ## Requirements
 
@@ -19,14 +19,14 @@ docker container ls -a
 * Clone this repo and run the following commands:
 
 ```sh
-git clone https://github.com/aryellesiqueira/boca-ldap.git
-cd boca-ldap
-docker compose up -d
+git clone https://github.com/aryellesiqueira/boca-auth.git
+cd boca-auth
+docker compose up -d --build
 ```
 
 Voilà! The application should be running now.
 
-* Open a web browser and visit the URL [http://localhost:8000/boca](http://localhost:8000/boca). First, create and activate a BOCA contest (user: _system_ | password: _boca_). Then, login as admin (user: _admin_ | password: _boca_) to manage users, problems, languages etc.
+* Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _system_ | password: _boca_). Then, login as admin (user: _admin_ | password: _boca_) to manage users, problems, languages etc.
 
 * To stop the application (considering that the shell is in the same directory):
 
@@ -55,4 +55,4 @@ This program is released under license GNU GPL v3+ license.
 
 ## Support
 
-Please report any issues with _boca-docker_ at [https://github.com/aryellesiqueira/boca-ldap/issues](https://github.com/aryellesiqueira/boca-ldap/issues)
+Please report any issues with _boca-docker_ at [https://github.com/aryellesiqueira/boca-auth/issues](https://github.com/aryellesiqueira/boca-auth/issues)

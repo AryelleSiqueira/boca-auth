@@ -1,11 +1,13 @@
 { 
     "docker.commands.composeUp": [
         {
-            "template": "docker compose up"
+            "label": "Default docker compose up command",
+            "template": "docker compose up --build"
         }
     ],
     "docker.commands.composeDown": [
         {
+            "label": "Default docker compose down command",
             "template": "docker compose down"
         }
     ]

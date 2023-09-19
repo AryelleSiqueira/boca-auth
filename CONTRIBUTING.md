@@ -6,7 +6,7 @@ just a few small guidelines you need to follow.
 ## Code of Conduct
 
 This project has a
-[Code of Conduct](https://github.com/aryellesiqueira/boca-ldap/blob/master/CODE_OF_CONDUCT.md)
+[Code of Conduct](https://github.com/aryellesiqueira/boca-auth/blob/master/CODE_OF_CONDUCT.md)
 to which all contributors must adhere.
 
 ## Code Reviews
