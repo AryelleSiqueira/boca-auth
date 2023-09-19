@@ -43,6 +43,15 @@ class GoogleClient {
         }
         return false;
     }
+
+    public function logout($token=null): void
+    {
+        if ($token) {
+            $this->client->revokeToken($token);
+        } else {
+            $this->client->revokeToken();
+        }
+    }
 }
 
 ?>

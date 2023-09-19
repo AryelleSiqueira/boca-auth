@@ -110,6 +110,8 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
   if((isset($_GET["name"]) && $_GET["name"] != "") || (isset($_POST["name"]) && $_POST["name"] != "") || $googleAuthorized) {
     
     if ($googleAuthorized) {
+      $_SESSION["google_token"] = $googleClient->client->getAccessToken();
+
       $userData = $googleClient->data;
       $username = substr($userData->email, 0, strpos($userData->email, '@'));
 
@@ -119,6 +121,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         if (in_array($userData->hd, explode(",", $allowedDomains))) {
           $usertable = DBLogIn($username, null);
         } else {
+          $usertable = false;
           MSGError('Usuário não autorizado.');
         }
       } else {
@@ -133,11 +136,14 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
     }
     
     if(!$usertable) {
+      if ($authMode == 'google') $googleClient->logout();
       ForceLoad("index.php");
     }
     else {
-      if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
+      if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null) {
+        if ($authMode == 'google') $googleClient->logout();
         ForceLoad("index.php");
+      }
       if($ct["contestlocalsite"]==$ct["contestmainsite"]) $main=true; else $main=false;
       if(isset($_GET['action']) && $_GET['action'] == 'transfer') {
         echo "TRANSFER OK";
@@ -145,6 +151,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         if($main && $_SESSION["usertable"]["usertype"] == 'site') {
           MSGError('Direct login of this user is not allowed');
           unset($_SESSION["usertable"]);
+          if ($authMode == 'google') $googleClient->logout();
           ForceLoad("index.php");
           exit;
         }

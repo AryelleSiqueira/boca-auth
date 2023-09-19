@@ -293,6 +293,10 @@ function DBLogOut($contest, $site, $user, $isadmin=false) {
 			}
 		}
 	}
+	if (getenv("BOCA_AUTH_METHOD") == "google")  {
+		$googleClient = new GoogleClient();
+		$googleClient->logout($_SESSION['google_token']);
+	}
 	LOGLevel("User $user (contest=$contest,site=$site) logged out.",2);
 }
 // eof
