@@ -46,10 +46,14 @@ class GoogleClient {
 
     public function logout($token=null): void
     {
-        if ($token) {
-            $this->client->revokeToken($token);
-        } else {
-            $this->client->revokeToken();
+        try {
+            if ($token) {
+                $this->client->revokeToken($token);
+            } else {
+                $this->client->revokeToken();
+            }
+        } catch (Exception $e) {
+            //echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
 }

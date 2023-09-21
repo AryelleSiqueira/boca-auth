@@ -145,9 +145,9 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		$ldapUser = LDAPGetUserInfo($ldapConnection, $name);
 
 		if ($ldapUser == null) {
-			LOGLevel("User $name tried to log in contest $contest but was not found in the ldap server",2);
+			LOGLevel("User $name tried to log in contest $contest but was not found in the LDAP server",2);
 			if ($msg)
-				MSGError("User not found in ldap server.");
+				MSGError("User not found in LDAP server.");
 			return false;
 		}
 		$a["userpassword"] = $ldapUser["userPassword"];

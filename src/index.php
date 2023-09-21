@@ -183,7 +183,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
               </td>
             </tr>
             <tr>
-              <td valign="top"> 
+              <td valign="top" id="localLogin" <?php if ($authMode == 'google') { ?> style="display: none;" <?php } ?>> 
                 <table border="0" align="left">
                   <tr> 
                     <td><font face="Verdana, Arial, Helvetica, sans-serif" > 
@@ -206,14 +206,52 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
           </table>
         </div>
       </form>
-      <?php 
-      if ($authMode == 'google')
-        echo 
-        '<a href="' . $googleClient->generateAuthUrl() . '" class="google-login-button">
-          <img src="https://accounts.scdn.co/sso/images/new-google-icon.72fd940a229bc94cf9484a3320b3dccb.svg" alt="Ícone do Google" class="google-icon">
-          Sign in with Google
-        </a>'
-      ?>
+
+      <?php if ($authMode == 'google') { ?>
+
+      <form>
+        <input id="googleLogin" 
+               type="button" 
+               value="Login with Google" 
+               style="
+                    background-image: url(https://accounts.scdn.co/sso/images/new-google-icon.72fd940a229bc94cf9484a3320b3dccb.svg);
+                    padding-left: 25px;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    padding-left: 25px;"
+               onclick="window.location.href='<?php echo $googleClient->generateAuthUrl(); ?>'">
+      </form>
+      <a id="localLoginLink" style="color: initial;" href="javascript:toggleLoginMethod();">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">
+        Login with local user
+        </font>
+      </a>
+      <a id="googleLoginLink" style="color: initial; display: none;" href="javascript:toggleLoginMethod();">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">
+        Login with Google
+        </font>
+      </a>
+      <script>
+        function toggleLoginMethod() {
+          var x = document.getElementById("localLogin");
+          var w = document.getElementById("googleLoginLink");
+          var y = document.getElementById("googleLogin");
+          var z = document.getElementById("localLoginLink");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+            w.style.display = "block";
+            y.style.display = "none";
+            z.style.display = "none";
+          } else {
+            x.style.display = "none";
+            w.style.display = "none";
+            y.style.display = "block";
+            z.style.display = "block";
+          }
+        }
+      </script>
+
+      <?php } ?>
     </td>
   </tr>
 </table>

@@ -83,11 +83,11 @@ services:
             #  - google: authenticate using a Google account
             # If unspecified then password authentication is used.
             - BOCA_AUTH_METHOD=google
-            # configuration options for LDAP authentication
-            - LDAP_SERVER=ldap://ldap:389
-            - LDAP_BASE_DN=dc=inf,dc=ufes,dc=br
-            - LDAP_USER=cn=admin,dc=inf,dc=ufes,dc=br
-            - LDAP_PASSWORD=ldappw
+            # # configuration options for LDAP authentication
+            # - LDAP_SERVER=ldap://ldap:389
+            # - LDAP_BASE_DN=dc=inf,dc=ufes,dc=br
+            # - LDAP_USER=cn=admin,dc=inf,dc=ufes,dc=br
+            # - LDAP_PASSWORD=ldappw
             # configuration options for Google authentication
             - BOCA_AUTH_ALLOWED_DOMAINS=edu.ufes.br,ufes.br
         ports: 
