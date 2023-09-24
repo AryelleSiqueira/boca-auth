@@ -133,13 +133,14 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 	}
 	$a = DBUserInfo($b["contestnumber"], $b["contestlocalsite"],$a['usernumber'],null,false);
 
-	$authMode = getenv("BOCA_AUTH_METHOD");
+	$a["authmethod"] = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
 
-	if (($name == "system" || $name == "admin") && ($authMode == 'ldap' && $authMode == 'google')) {
+	if ($a["authmethod"] != "password" && ($name == "system" || $name == "admin")) {
+		$a["authmethod"] = "password";
 		$p = $a["userpassword"];
 		$pass = myhash($pass);
 	}
-	else if ($authMode == 'ldap') {
+	else if ($a["authmethod"] == 'ldap') {
 		$ldapConnection = LDAPConnect();
 
 		$ldapUser = LDAPGetUserInfo($ldapConnection, $name);
@@ -158,9 +159,8 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		
 		LDAPDisconnect($ldapConnection);
 	}
-	else if ($authMode == 'google') {
-		$p = null;
-		$pass = null;
+	else if ($a["authmethod"] == 'google') {
+		$p = $pass;
 	}
 	else {
 		$p = myhash($a["userpassword"] . session_id());
@@ -293,7 +293,7 @@ function DBLogOut($contest, $site, $user, $isadmin=false) {
 			}
 		}
 	}
-	if (getenv("BOCA_AUTH_METHOD") == "google")  {
+	if ($_SESSION['usertable']['authmethod'] == 'google')  {
 		$googleClient = new GoogleClient();
 		$googleClient->logout($_SESSION['google_token']);
 	}
