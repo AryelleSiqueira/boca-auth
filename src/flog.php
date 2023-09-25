@@ -159,7 +159,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		
 		LDAPDisconnect($ldapConnection);
 	}
-	else if ($a["authmethod"] == 'google') {
+	else if ($_SESSION["google_authorized"]) {
 		$p = $pass;
 	}
 	else {
@@ -293,7 +293,7 @@ function DBLogOut($contest, $site, $user, $isadmin=false) {
 			}
 		}
 	}
-	if ($_SESSION['usertable']['authmethod'] == 'google')  {
+	if ($_SESSION["google_authorized"])  {
 		$googleClient = new GoogleClient();
 		$googleClient->logout($_SESSION['google_token']);
 	}
