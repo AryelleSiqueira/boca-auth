@@ -16,7 +16,8 @@ class GoogleClient {
      */
     public function __construct() {
         $this->client = new Client();
-        $this->client->setAuthConfig('../credentials/client_secret.json');
+        $this->client->setClientId(getenv('GOOGLE_CLIENT_ID'));
+        $this->client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
         $this->client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/boca/index.php');
         $this->client->addScope('email');
         $this->client->addScope('profile');

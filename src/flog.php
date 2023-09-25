@@ -127,7 +127,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 	if ($a == null) {
 		if($msg) {
 			LOGLevel("User $name tried to log in contest $contest but it does not exist.",2);
-			MSGError("User does not exist or incorrect password.");
+			MSGError("User does not exist" . ($_SESSION['google_authorized'] ? "" : " or incorrect password") . ".");
 		}
 		return false;
 	}
