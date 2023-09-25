@@ -90,6 +90,8 @@ services:
             # - LDAP_PASSWORD=ldappw
             # configuration options for Google authentication
             - BOCA_AUTH_ALLOWED_DOMAINS=edu.ufes.br,ufes.br
+            - GOOGLE_CLIENT_ID=350906241331-89relcsntran6aj7mse5nl90044akg13.apps.googleusercontent.com
+            - GOOGLE_CLIENT_SECRET=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
         ports: 
             - 8001:80
         volumes:
@@ -100,7 +102,6 @@ services:
             - ./src/ldap.php:/var/www/boca/src/ldap.php
             - ./src/googleclient.php:/var/www/boca/src/googleclient.php
             - ./src/googlebutton.css:/var/www/boca/src/googlebutton.css
-            - ./credentials:/var/www/boca/credentials
 
     # # online judge
     # boca-jail:

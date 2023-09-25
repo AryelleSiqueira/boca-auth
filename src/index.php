@@ -34,10 +34,6 @@ require_once("db.php");
 require_once("ldap.php");
 require_once("googleclient.php");
 
-$authMode = getenv("BOCA_AUTH_METHOD");
-
-if ($authMode == 'google') $googleClient = new GoogleClient();
-
 if (!isset($_GET["name"])) {
 	if (ValidSession())
 	  DBLogOut($_SESSION["usertable"]["contestnumber"], 
@@ -72,6 +68,8 @@ ob_end_flush();
 
 require_once('version.php');
 
+$authMode = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+
 ?>
 <title>BOCA Online Contest Administrator <?php echo $BOCAVERSION; ?> - Login</title>
 <head>
@@ -84,7 +82,7 @@ require_once('version.php');
 function submitForm() {
     const authMode = "<?php echo $authMode; ?>";
 
-    if (!authMode || authMode == 'password') {
+    if (authMode === 'password') {
       computeHASH();
     } else {
       document.form1.method = 'post';
@@ -104,12 +102,15 @@ function computeHASH()
 }
 </script>
 <?php
-$googleAuthorized = $authMode == 'google' && $googleClient->authorized();
+if ($authMode == 'google') {
+  $googleClient = new GoogleClient();
+}
+$_SESSION["google_authorized"] = isset($googleClient) && $googleClient->authorized();
 
 if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
-  if((isset($_GET["name"]) && $_GET["name"] != "") || (isset($_POST["name"]) && $_POST["name"] != "") || $googleAuthorized) {
+  if((isset($_GET["name"]) && $_GET["name"] != "") || (isset($_POST["name"]) && $_POST["name"] != "") || $_SESSION["google_authorized"]) {
     
-    if ($googleAuthorized) {
+    if ($_SESSION["google_authorized"]) {
       $_SESSION["google_token"] = $googleClient->client->getAccessToken();
 
       $userData = $googleClient->data;
@@ -136,12 +137,12 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
     }
     
     if(!$usertable) {
-      if ($authMode == 'google') $googleClient->logout();
+      if ($_SESSION["google_authorized"]) $googleClient->logout();
       ForceLoad("index.php");
     }
     else {
       if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null) {
-        if ($authMode == 'google') $googleClient->logout();
+        if ($_SESSION["google_authorized"]) $googleClient->logout();
         ForceLoad("index.php");
       }
       if($ct["contestlocalsite"]==$ct["contestmainsite"]) $main=true; else $main=false;
@@ -151,7 +152,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         if($main && $_SESSION["usertable"]["usertype"] == 'site') {
           MSGError('Direct login of this user is not allowed');
           unset($_SESSION["usertable"]);
-          if ($authMode == 'google') $googleClient->logout();
+          if ($_SESSION["google_authorized"]) $googleClient->logout();
           ForceLoad("index.php");
           exit;
         }
