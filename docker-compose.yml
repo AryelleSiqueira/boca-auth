@@ -71,20 +71,27 @@ services:
             #######################
             # TO BE REVIEWED
             #######################
+            # specifies the users to be created as the system and admin users.
+            # If unspecified then creates default system and admin user
+            # The default system and admin users always use the default authentication method (password)
+            - BOCA_SYSTEM_USER=system
+            - BOCA_ADMIN_USER=aryelle.siqueira
             # specifies the authentication method to use. The possible choices
             # are summarized here:
             #  - password: require the user to supply a password
             #  - ldap: authenticate using a LDAP server
+            #  - google: authenticate using a Google account
             # If unspecified then password authentication is used.
-            - BOCA_AUTH_METHOD=ldap
+            - BOCA_AUTH_METHOD=google
             # configuration options for LDAP authentication
             - LDAP_SERVER=ldap://ldap:389
             - LDAP_BASE_DN=dc=inf,dc=ufes,dc=br
             - LDAP_USER=cn=admin,dc=inf,dc=ufes,dc=br
             - LDAP_PASSWORD=ldappw
-            # If unspecified then creates a default system and admin user
-            - BOCA_SYSTEM_USER=professorum
-            - BOCA_ADMIN_USER=professordois
+            # configuration options for Google authentication
+            - BOCA_AUTH_ALLOWED_DOMAINS=edu.ufes.br,ufes.br
+            - GOOGLE_CLIENT_ID=350906241331-89relcsntran6aj7mse5nl90044akg13.apps.googleusercontent.com
+            - GOOGLE_CLIENT_SECRET=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
         ports: 
             - 8001:80
         volumes:
@@ -93,6 +100,8 @@ services:
             - ./src/fcontest.php:/var/www/boca/src/fcontest.php
             - ./src/admin/user.php:/var/www/boca/src/admin/user.php
             - ./src/ldap.php:/var/www/boca/src/ldap.php
+            - ./src/googleclient.php:/var/www/boca/src/googleclient.php
+            - ./src/googlebutton.css:/var/www/boca/src/googlebutton.css
 
     # # online judge
     # boca-jail:
