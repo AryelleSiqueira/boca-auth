@@ -76,7 +76,6 @@ services:
             # The default system and admin users always use the default authentication method (password)
             - BOCA_SYSTEM_USER=system
             - BOCA_ADMIN_USER=aryelle.siqueira
-            - BOCA_FAKE_TEAM_USER=teamuser
             # specifies the authentication method to use. The possible choices
             # are summarized here:
             #  - password: require the user to supply a password
