@@ -100,6 +100,7 @@ services:
             - ./src/flog.php:/var/www/boca/src/flog.php
             - ./src/fcontest.php:/var/www/boca/src/fcontest.php
             - ./src/admin/user.php:/var/www/boca/src/admin/user.php
+            - ./src/optionlower.php:/var/www/boca/src/optionlower.php
             - ./src/ldap.php:/var/www/boca/src/ldap.php
             - ./src/googleclient.php:/var/www/boca/src/googleclient.php
             - ./src/googlebutton.css:/var/www/boca/src/googlebutton.css
