@@ -55,4 +55,4 @@ This program is released under license GNU GPL v3+ license.
 
 ## Support
 
-Please report any issues with _boca-docker_ at [https://github.com/aryellesiqueira/boca-auth/issues](https://github.com/aryellesiqueira/boca-auth/issues)
+Please report any issues with _boca-auth_ at [https://github.com/aryellesiqueira/boca-auth/issues](https://github.com/aryellesiqueira/boca-auth/issues)
