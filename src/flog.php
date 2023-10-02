@@ -133,11 +133,11 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 	}
 	$a = DBUserInfo($b["contestnumber"], $b["contestlocalsite"],$a['usernumber'],null,false);
 
-	$fakeUser = getenv("BOCA_FAKE_TEAM_USER");
+	$localTeamUser = getenv("BOCA_LOCAL_TEAM_USER");
 
 	$a["authmethod"] = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
 
-	if ($a["authmethod"] != "password" && ($name == "system" || $name == "admin" || ($fakeUser && $name == $fakeUser))) {
+	if ($a["authmethod"] != "password" && ($name == "system" || $name == "admin" || ($localTeamUser && $name == $localTeamUser))) {
 		$a["authmethod"] = "password";
 		$p = $a["userpassword"];
 		$pass = myhash($pass);
@@ -148,7 +148,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		$ldapUser = LDAPGetUserInfo($ldapConnection, $name);
 
 		if ($ldapUser == null) {
-			LOGLevel("User $name tried to log in contest $contest but was not found in the ldap server",2);
+			LOGLevel("User $name tried to log in contest $contest but was not found in the LDAP server",2);
 			if ($msg)
 				MSGError("User not found in LDAP server.");
 			return false;

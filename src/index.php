@@ -75,7 +75,6 @@ $authMode = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password"
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet href="Css.php" type="text/css">
-<link rel=stylesheet href="googlebutton.css" type="text/css">
 <script language="JavaScript" src="sha256.js"></script>
 <script language="JavaScript">
 
@@ -184,7 +183,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
               </td>
             </tr>
             <tr>
-              <td valign="top"> 
+              <td valign="top" id="localLogin" <?php if ($authMode == 'google') { ?> style="display: none;" <?php } ?>> 
                 <table border="0" align="left">
                   <tr> 
                     <td><font face="Verdana, Arial, Helvetica, sans-serif" > 
@@ -207,14 +206,46 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
           </table>
         </div>
       </form>
-      <?php 
-      if ($authMode == 'google')
-        echo 
-        '<a href="' . $googleClient->generateAuthUrl() . '" class="google-login-button">
-          <img src="https://accounts.scdn.co/sso/images/new-google-icon.72fd940a229bc94cf9484a3320b3dccb.svg" alt="Ícone do Google" class="google-icon">
-          Sign in with Google
-        </a>'
-      ?>
+
+      <?php if ($authMode == 'google') { ?>
+
+      <form>
+        <input id="googleLogin" 
+               type="button" 
+               value="Login with Google" 
+               style="
+                    background-image: url(https://accounts.scdn.co/sso/images/new-google-icon.72fd940a229bc94cf9484a3320b3dccb.svg);
+                    padding-left: 25px;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    padding-left: 25px;"
+               onclick="window.location.href='<?php echo $googleClient->generateAuthUrl(); ?>'">
+      </form>
+      <a id="localLoginLink" style="color: initial;" href="javascript:toggleLoginMethod();">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">
+        Login with local user
+        </font>
+      </a>
+      <a id="googleLoginLink" style="color: initial; display: none;" href="javascript:toggleLoginMethod();">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">
+        Login with Google
+        </font>
+      </a>
+      <script>
+      function toggleLoginMethod() {
+        const localLogin = document.getElementById("localLogin");
+        const googleLoginLink = document.getElementById("googleLoginLink");
+        const googleLogin = document.getElementById("googleLogin");
+        const localLoginLink = document.getElementById("localLoginLink");
+
+        localLogin.style.display = localLogin.style.display === "none" ? "block" : "none";
+        googleLoginLink.style.display = googleLoginLink.style.display === "none" ? "block" : "none";
+        googleLogin.style.display = googleLogin.style.display === "none" ? "block" : "none";
+        localLoginLink.style.display = localLoginLink.style.display === "none" ? "block" : "none";
+      }
+      </script>
+
+      <?php } ?>
     </td>
   </tr>
 </table>

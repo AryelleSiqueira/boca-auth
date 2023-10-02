@@ -69,7 +69,7 @@ if (isset($_POST["username"]) && isset($_POST["userfullname"]) && isset($_POST["
 	$passcheck = $_POST["passwordo"];
 	$a = DBUserInfo($_SESSION["usertable"]["contestnumber"], $_SESSION["usertable"]["usersitenumber"], $_SESSION["usertable"]["usernumber"], null, false);
 
-  if ($_SESSION["usertable"]["authmethod"] != "password") {
+  if ($authMethod != "password") {
     $p = $passcheck;
   }
   else {
