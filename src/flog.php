@@ -161,8 +161,14 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		
 		LDAPDisconnect($ldapConnection);
 	}
-	else if ($_SESSION["google_authorized"]) {
-		$p = $pass;
+	else if ($a["authmethod"] == 'google') {
+		if ($_SESSION["google_authorized"]) $p = $pass;
+		else {
+			LOGLevel("User $name tried to log in contest $contest but was not authorized by google",2);
+			if ($msg)
+				MSGError("User must login with Google.");
+			return false;
+		}
 	}
 	else {
 		$p = myhash($a["userpassword"] . session_id());
