@@ -75,7 +75,6 @@ $authMode = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password"
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet href="Css.php" type="text/css">
-<link rel=stylesheet href="googlebutton.css" type="text/css">
 <script language="JavaScript" src="sha256.js"></script>
 <script language="JavaScript">
 
@@ -233,23 +232,17 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         </font>
       </a>
       <script>
-        function toggleLoginMethod() {
-          var x = document.getElementById("localLogin");
-          var w = document.getElementById("googleLoginLink");
-          var y = document.getElementById("googleLogin");
-          var z = document.getElementById("localLoginLink");
-          if (x.style.display === "none") {
-            x.style.display = "block";
-            w.style.display = "block";
-            y.style.display = "none";
-            z.style.display = "none";
-          } else {
-            x.style.display = "none";
-            w.style.display = "none";
-            y.style.display = "block";
-            z.style.display = "block";
-          }
-        }
+      function toggleLoginMethod() {
+        const localLogin = document.getElementById("localLogin");
+        const googleLoginLink = document.getElementById("googleLoginLink");
+        const googleLogin = document.getElementById("googleLogin");
+        const localLoginLink = document.getElementById("localLoginLink");
+
+        localLogin.style.display = localLogin.style.display === "none" ? "block" : "none";
+        googleLoginLink.style.display = googleLoginLink.style.display === "none" ? "block" : "none";
+        googleLogin.style.display = googleLogin.style.display === "none" ? "block" : "none";
+        localLoginLink.style.display = localLoginLink.style.display === "none" ? "block" : "none";
+      }
       </script>
 
       <?php } ?>

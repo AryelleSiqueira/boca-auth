@@ -1,4 +1,5 @@
 <?php
+require_once('globals.php');
 require '../vendor/autoload.php';
 
 use Google\Client;
@@ -18,7 +19,10 @@ class GoogleClient {
         $this->client = new Client();
         $this->client->setClientId(getenv('GOOGLE_CLIENT_ID'));
         $this->client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
-        $this->client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/boca/index.php');
+
+        $httpStr = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? "https://" : "http://";
+
+        $this->client->setRedirectUri($httpStr . $_SERVER['HTTP_HOST'] . '/boca/index.php');
         $this->client->addScope('email');
         $this->client->addScope('profile');
 
@@ -54,7 +58,7 @@ class GoogleClient {
                 $this->client->revokeToken();
             }
         } catch (Exception $e) {
-            //echo 'Caught exception: ',  $e->getMessage(), "\n";
+            LOGLevel("Error revoking token: " . $e->getMessage(), 0);
         }
     }
 }

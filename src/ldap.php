@@ -5,8 +5,8 @@ function LDAPConnect() {
     $ldapConnection = ldap_connect(getenv('LDAP_SERVER'));
 
     if (!$ldapConnection) {
-        LOGLevel("Erro ao conectar com o servidor LDAP", 0);
-		MSGError("Erro ao conectar com o servidor LDAP");
+        LOGLevel("Error while connecting to LDAP server", 0);
+		MSGError("Error while connecting to LDAP server");
         exit;
     }
     ldap_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -15,8 +15,8 @@ function LDAPConnect() {
     $bindResult = ldap_bind($ldapConnection, getenv('LDAP_USER'), getenv('LDAP_PASSWORD'));
     
     if (!$bindResult) {
-        LOGLevel("Erro ao autenticar com o servidor LDAP", 0);
-        MSGError("Erro ao autenticar com o servidor LDAP");
+        LOGLevel("Error while authenticating with LDAP server", 0);
+        MSGError("Error while authenticating with LDAP server");
         exit;
     }
     return $ldapConnection;
@@ -28,8 +28,8 @@ function LDAPGetUserInfo($ldapConnection, $name) {
     $searchResult = ldap_search($ldapConnection, getenv('LDAP_BASE_DN'), $searchFilter, $searchAttributes);
 
     if (!$searchResult) {
-        LOGLevel("Erro ao realizar busca no servidor LDAP", 0);
-        MSGError("Erro ao realizar busca no servidor LDAP");
+        LOGLevel("Error while searching LDAP server", 0);
+        MSGError("Error while searching LDAP server");
         exit;
     }
 
