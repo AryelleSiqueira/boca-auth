@@ -122,7 +122,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
           $usertable = DBLogIn($username, null);
         } else {
           $usertable = false;
-          MSGError('Usuário não autorizado.');
+          MSGError('User is not authorized.');
         }
       } else {
         $usertable = DBLogIn($username, null);
