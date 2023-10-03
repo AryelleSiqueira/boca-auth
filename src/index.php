@@ -234,6 +234,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
       <script>
       function toggleLoginMethod() {
         const localLogin = document.getElementById("localLogin");
+        const usernameField = document.getElementsByTagName("input")[0];
         const googleLoginLink = document.getElementById("googleLoginLink");
         const googleLogin = document.getElementById("googleLogin");
         const localLoginLink = document.getElementById("localLoginLink");
@@ -242,7 +243,13 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         googleLoginLink.style.display = googleLoginLink.style.display === "none" ? "block" : "none";
         googleLogin.style.display = googleLogin.style.display === "none" ? "block" : "none";
         localLoginLink.style.display = localLoginLink.style.display === "none" ? "block" : "none";
+        // Set focus
+        if (localLogin.style.display === "block")
+          usernameField.focus();
+        else googleLogin.focus();
       }
+
+      document.getElementById("googleLogin").focus();
       </script>
 
       <?php } ?>
