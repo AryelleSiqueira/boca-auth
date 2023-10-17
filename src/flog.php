@@ -156,8 +156,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		$a["userpassword"] = $ldapUser["userPassword"];
 		$p = $a["userpassword"];
 
-		$salt = substr(base64_decode(substr($ldapUser["userPassword"], 6)), 20);
-        $pass = '{SSHA}' . base64_encode(sha1( $pass.$salt, TRUE ) . $salt); // TODO: GENERALIZAR
+        $pass = encryptPlainTextPassword($pass, $ldapUser["userPassword"]);
 		
 		LDAPDisconnect($ldapConnection);
 	}
@@ -306,6 +305,23 @@ function DBLogOut($contest, $site, $user, $isadmin=false) {
 		$googleClient->logout($_SESSION['google_token']);
 	}
 	LOGLevel("User $user (contest=$contest,site=$site) logged out.",2);
+}
+
+function encryptPlainTextPassword($plain_password, $hashedPassword) {
+	if (substr($hashedPassword, 0, 7) == '{CRYPT}') {
+		return '{CRYPT}' . crypt($plain_password, substr($hashedPassword, 7));
+	}
+	if (substr($hashedPassword, 0, 5) == '{MD5}') {
+		return '{MD5}' . base64_encode(md5($plain_password, true));
+	}
+	if (substr($hashedPassword, 0, 5) == '{SHA}') {
+		return '{SHA}' . base64_encode(sha1($plain_password, true));
+	}
+	if (substr($hashedPassword, 0, 6) == '{SSHA}') {
+		$salt = substr(base64_decode(substr($hashedPassword,6)), 20);
+		return '{SSHA}' . base64_encode(sha1($plain_password . $salt, true). $salt);
+	}
+	return $plain_password;
 }
 // eof
 ?>
