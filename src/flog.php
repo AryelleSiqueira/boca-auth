@@ -133,11 +133,11 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 	}
 	$a = DBUserInfo($b["contestnumber"], $b["contestlocalsite"],$a['usernumber'],null,false);
 
-	$localTeamUser = getenv("BOCA_LOCAL_TEAM_USER");
+	$localUsers = [...explode(",", getenv("BOCA_LOCAL_USERS")), ...array("system", "admin")];
 
 	$a["authmethod"] = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
 
-	if ($a["authmethod"] != "password" && ($name == "system" || $name == "admin" || ($localTeamUser && $name == $localTeamUser))) {
+	if ($a["authmethod"] != "password" && in_array($name, $localUsers)) {
 		$a["authmethod"] = "password";
 		$p = $a["userpassword"];
 		$pass = myhash($pass);

@@ -76,14 +76,14 @@ services:
             # The default system and admin users always use the default authentication method (password)
             - BOCA_SYSTEM_USER=system
             - BOCA_ADMIN_USER=admin
-            - BOCA_LOCAL_TEAM_USER=teamuser
+            - BOCA_LOCAL_USERS=teamuser,teamuser2
             # specifies the authentication method to use. The possible choices
             # are summarized here:
             #  - password: require the user to supply a password
             #  - ldap: authenticate using a LDAP server
             #  - google: authenticate using a Google account
             # If unspecified then password authentication is used.
-            - BOCA_AUTH_METHOD=google
+            - BOCA_AUTH_METHOD=ldap
             # # configuration options for LDAP authentication
             - LDAP_SERVER=ldap://ldap:389
             - LDAP_BASE_DN=dc=inf,dc=ufes,dc=br
