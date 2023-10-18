@@ -143,9 +143,9 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		$pass = myhash($pass);
 	}
 	else if ($a["authmethod"] == 'ldap') {
-		$ldapConnection = LDAPConnect();
+		$ldapManager = new LDAPManager();
 
-		$ldapUser = LDAPGetUserInfo($ldapConnection, $name);
+		$ldapUser = $ldapManager->getUserInfo($name);
 
 		if ($ldapUser == null) {
 			LOGLevel("User $name tried to log in contest $contest but was not found in the LDAP server",2);
@@ -158,7 +158,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 
         $pass = encryptPlainTextPassword($pass, $ldapUser["userPassword"]);
 		
-		LDAPDisconnect($ldapConnection);
+		$ldapManager->disconnect();
 	}
 	else if ($a["authmethod"] == 'google') {
 		if ($_SESSION["google_authorized"]) $p = $pass;
