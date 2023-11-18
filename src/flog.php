@@ -143,22 +143,23 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		$pass = myhash($pass);
 	}
 	else if ($a["authmethod"] == 'ldap') {
-		$ldapManager = new LDAPManager();
+		try {
+			$ldapManager = new LDAPManager();
+			$isAuthenticated = $ldapManager->authenticateUser($name, $pass);
 
-		$ldapUser = $ldapManager->getUserInfo($name);
-
-		if ($ldapUser == null) {
-			LOGLevel("User $name tried to log in contest $contest but was not found in the LDAP server",2);
-			if ($msg)
-				MSGError("User not found in LDAP server.");
+			if (!$isAuthenticated) {
+				LOGLevel("User $name tried to log in contest $contest but it does not exist in LDAP server or incorrect password.", 2);
+				if ($msg) MSGError("User does not exist or incorrect password.");
+				return false;
+			}
+			$p = $pass;
+			$ldapManager->disconnect();
+		} 
+		catch (Exception $e) {
+			LOGLevel("User $name tried to log in contest $contest but LDAP server is not available. " . $e->getMessage(), 2);
+			if ($msg) MSGError("LDAP server is not available.");
 			return false;
 		}
-		$a["userpassword"] = $ldapUser["userPassword"];
-		$p = $a["userpassword"];
-
-        $pass = encryptPlainTextPassword($pass, $ldapUser["userPassword"]);
-		
-		$ldapManager->disconnect();
 	}
 	else if ($a["authmethod"] == 'google') {
 		if ($_SESSION["google_authorized"]) $p = $pass;
@@ -301,27 +302,14 @@ function DBLogOut($contest, $site, $user, $isadmin=false) {
 		}
 	}
 	if ($_SESSION["google_authorized"])  {
-		$googleClient = new GoogleClient();
-		$googleClient->logout($_SESSION['google_token']);
+		try {
+			$googleClient = new GoogleClient();
+			$googleClient->logout($_SESSION['google_token']);
+		} catch (Exception $e) {
+			LOGLevel($e->getMessage(), 0);
+		}
 	}
 	LOGLevel("User $user (contest=$contest,site=$site) logged out.",2);
-}
-
-function encryptPlainTextPassword($plain_password, $hashedPassword) {
-	if (substr($hashedPassword, 0, 7) == '{CRYPT}') {
-		return '{CRYPT}' . crypt($plain_password, substr($hashedPassword, 7));
-	}
-	if (substr($hashedPassword, 0, 5) == '{MD5}') {
-		return '{MD5}' . base64_encode(md5($plain_password, true));
-	}
-	if (substr($hashedPassword, 0, 5) == '{SHA}') {
-		return '{SHA}' . base64_encode(sha1($plain_password, true));
-	}
-	if (substr($hashedPassword, 0, 6) == '{SSHA}') {
-		$salt = substr(base64_decode(substr($hashedPassword,6)), 20);
-		return '{SSHA}' . base64_encode(sha1($plain_password . $salt, true). $salt);
-	}
-	return $plain_password;
 }
 // eof
 ?>

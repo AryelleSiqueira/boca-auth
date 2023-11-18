@@ -8,45 +8,34 @@ class LDAPManager {
         $this->connect();
     }
 
-    public function connect() {
+    private function connect() {
         $this->ldapConnection = ldap_connect(getenv('LDAP_SERVER'));
 
         if (!$this->ldapConnection) {
-            LOGLevel("Error while connecting to LDAP server", 0);
-            MSGError("Error while connecting to LDAP server");
-            exit;
+            throw new Exception('Error while connecting to LDAP server');
         }
         ldap_set_option($this->ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($this->ldapConnection, LDAP_OPT_REFERRALS, 0);
+		
+		if (getenv('LDAP_CERTIFICATE')) 
+			ldap_set_option($this->ldapConnection, LDAP_OPT_X_TLS_CACERTFILE, getenv('LDAP_CERTIFICATE'));
         
         $bindResult = ldap_bind($this->ldapConnection, getenv('LDAP_USER'), getenv('LDAP_PASSWORD'));
         
         if (!$bindResult) {
-            LOGLevel("Error while authenticating with LDAP server", 0);
-            MSGError("Error while authenticating with LDAP server");
-            exit;
+            throw new Exception('Error while authenticating with LDAP server');
         }
     }
 
-    public function getUserInfo($name) {
-        $searchFilter = "(uid=$name)";
-        $searchAttributes = ['uid', 'userPassword'];
-        $searchResult = ldap_search($this->ldapConnection, getenv('LDAP_BASE_DN'), $searchFilter, $searchAttributes);
-
-        if (!$searchResult) {
-            LOGLevel("Error while searching LDAP server", 0);
-            MSGError("Error while searching LDAP server");
-            exit;
-        }
+    public function authenticateUser($name, $pass) {
+        $searchResult = ldap_search($this->ldapConnection, getenv('LDAP_BASE_DN'), "(uid=$name)");
         $entries = ldap_get_entries($this->ldapConnection, $searchResult);
 
-        if ($entries['count'] === 0) {
-            return null;
-        }
-        $userData['userPassword'] = $entries[0]['userpassword'][0];
-        $userData['userId'] = $entries[0]['uid'][0];
+        if ($entries['count'] === 0) return false;
 
-        return $userData;
+        $userDn = $entries[0]['dn'];
+
+        return ldap_bind($this->ldapConnection, $userDn, $pass);
     }
 
     public function disconnect() {

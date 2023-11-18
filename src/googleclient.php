@@ -58,7 +58,7 @@ class GoogleClient {
                 $this->client->revokeToken();
             }
         } catch (Exception $e) {
-            LOGLevel("Error revoking token: " . $e->getMessage(), 0);
+            throw new Exception('Error while revoking token: '. $e->getMessage());
         }
     }
 }
