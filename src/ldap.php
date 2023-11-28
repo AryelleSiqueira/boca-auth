@@ -16,9 +16,6 @@ class LDAPManager {
         }
         ldap_set_option($this->ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($this->ldapConnection, LDAP_OPT_REFERRALS, 0);
-		
-		if (getenv('LDAP_CERTIFICATE')) 
-			ldap_set_option($this->ldapConnection, LDAP_OPT_X_TLS_CACERTFILE, getenv('LDAP_CERTIFICATE'));
         
         $bindResult = ldap_bind($this->ldapConnection, getenv('LDAP_USER'), getenv('LDAP_PASSWORD'));
         
