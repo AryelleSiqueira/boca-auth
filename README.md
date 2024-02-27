@@ -26,7 +26,7 @@
 
 ## What Is BOCA?
 
-The BOCA Online Contest Administrator, commonly referred to as BOCA, is a robust administrative system designed for orchestrating programming contests, including renowned events like ACM-ICPC and Maratona de Programação da SBC. BOCA represents a powerful tool for streamlining the administration of programming contests, making it a valuable asset for contest organizers and participants.
+The BOCA Online Contest Administrator, commonly referred to as BOCA, is a robust administrative system designed for orchestrating programming contests following the [ACM-ICPC](https://icpc.global/) rules, particularly the [Maratona SBC de Programação](https://maratona.sbc.org.br/). BOCA represents a powerful tool for streamlining the administration of programming contests, making it a valuable asset for contest organizers and participants.
 For more in-depth information, please visit the official repository at [https://github.com/cassiopc/boca](https://github.com/cassiopc/boca).
 
 In order to grant access to the system, it is imperative to ascertain whether the user attempting to connect possesses the necessary credentials. At present, BOCA's sole authentication method mandates that a user's provided password undergo encryption before transmission across the connection and storage in the database.
