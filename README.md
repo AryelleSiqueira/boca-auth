@@ -4,7 +4,7 @@
 
 - [What Is BOCA?](#what-is-boca)
 - [Why boca-auth?](#why-boca-auth)
-- [How Does It Work](#how-does-it-work)
+- [How Does It Work?](#how-does-it-work)
 - [Requirements](#requirements)
 - [Quick Start](#quick-start)
 - [How To Add Custom Configuration](#how-to-add-custom-configuration)
@@ -28,7 +28,12 @@ This encryption process employs cryptographic hashing, which is widely regarded 
 The _boca-auth_ project exemplifies the practical application of alternative authentication methods to elevate user convenience, foster inclusivity, and alleviate the burden of password fatigue, which often plagues users managing multiple accounts.
 Through extensive reverse engineering efforts, we have devised a method that empowers administrators to configure BOCA's authentication settings conveniently via environment variables, thereby extending support for both [LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) and [Google](https://developers.google.com/workspace/guides/auth-overview) authentication methods.
 
-## How Does It Work
+This work started as part of the undergraduate final year project carried out by Aryelle Gomes Siqueira under supervision of Prof. Dr. Rodrigo Laiola Guimaraes at Universidade Federal do Espirito Santo ([UFES](https://www.ufes.br/)).
+
+## How Does It Work?
+
+#### BOCA Authentication (Default)
+![Alt text](/imgs/default-auth.png "BOCA authentication (default)")
 
 #### LDAP Authentication
 ![Alt text](/imgs/ldap-auth.png "BOCA authentication against LDAP")
@@ -127,10 +132,11 @@ Before submitting a PR consider building and testing a Docker image locally and 
 
   ```sh
   docker run --rm \
-              -e RUN_LOCAL=true \
-              -e USE_FIND_ALGORITHM=true \
-              --env-file ".github/super-linter.env" \
-              -v "$PWD":/tmp/lint ghcr.io/github/super-linter:slim-v5
+             -e ACTIONS_RUNNER_DEBUG=true \
+             -e RUN_LOCAL=true \
+             --env-file ".github/super-linter.env" \
+             -v "$PWD":/tmp/lint \
+             ghcr.io/super-linter/super-linter:latest
   ```
 
 ## License
