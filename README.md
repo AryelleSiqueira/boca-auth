@@ -41,8 +41,8 @@ This work started as part of the undergraduate final year project carried out by
 
 ## How Does It Work?
 
-#### BOCA Authentication (Default)
-![Alt text](/imgs/default-auth.png "BOCA authentication (default)")
+#### Default Authentication
+![Alt text](/imgs/default-auth.png "BOCA default authentication")
 
 #### LDAP Authentication
 ![Alt text](/imgs/ldap-auth.png "BOCA authentication against LDAP")
