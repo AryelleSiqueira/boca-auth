@@ -1193,7 +1193,7 @@ function DBUserUpdate($contest, $site, $user, $username, $userfull, $userdesc, $
 		MSGError ("Incorrect password.");
 	}
 	else { 
-		// Always enable password change for BOCA_AUTH_METHOD via UI
+		// Always enable password change for BOCA_LOCAL_USERS via UI
 		$authMethod = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
 		$localUsers = [...explode(",", getenv("BOCA_LOCAL_USERS")), ...array("system", "admin")];
 		if ($authMethod != "password" && in_array($username, $localUsers));
