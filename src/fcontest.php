@@ -1349,7 +1349,7 @@ function DBNewUser($param, $c=null) {
 			if ($authMethod != "password" && in_array($username, $localUsers)) {
 				$cf=globalconf();
 				$pass=myhash($cf["basepass"]);
-				if ($type != "admin" && substr($pass,0,1) != "!") $pass = '!' . $pass;
+				if ($type != "admin" && $changepass != "t" && substr($pass,0,1) != "!") $pass = '!' . $pass;
 		  	}
 
 			$sql = "insert into usertable (contestnumber, usersitenumber, usernumber, username, usericpcid, userfullname, " .
