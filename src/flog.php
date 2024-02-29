@@ -269,7 +269,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		DBExec($c,"update usertable set userip='" . $gip . "', updatetime=" . time() . ", userlastlogin=$t, ". 
 			   "usersession='".session_id()."' where username='$name' and contestnumber=".
 			   $b["contestnumber"]." and usersitenumber=".$b["contestlocalsite"], "DBLogIn(update user)");
-		if($name=='admin') {
+		if($a["usertype"]=='admin') {
 			list($clockstr,$clocktime)=siteclock();
 			if($clocktime < -600)
 				DBExec($c,"update contesttable set contestunlockkey='' where contestnumber=" . $b["contestnumber"], "DBLogInContest(update contest)");
