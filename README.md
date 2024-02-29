@@ -84,21 +84,21 @@ This work started as part of the undergraduate final year project carried out by
 
 ## How To Add Custom Configuration
 
-The configuration of the authentication method hinges on a collection of environment variables.
+The configuration of the authentication method hinges on a collection of environment variables in BOCA's web server.
 
 ### Case 1: LDAP Authentication
 - **Defining Environment Variables:**
 
 | Name                | Values                   | Description                                            |
 |---------------------|---------------------------|--------------------------------------------------------|
-| **BOCA_AUTH_METHOD** | ldap                    | Variable that defines the global authentication method as LDAP. |
-| **BOCA_SYSTEM_USER** | system - <ldap_user>    | Optional. Defines the user with "system" type permissions. When you want to define a user capable of authenticating with the LDAP server, you should provide the user's UUID. If you wish to use the default system user created by the system, simply specify the value 'system' or leave the variable undefined. |
-| **BOCA_ADMIN_USER**  | admin - <ldap_user>     | Optional. Defines the user with "admin" type permissions. When you want to define a user capable of authenticating with the LDAP server, you should provide the user's UUID. If you wish to use the default admin user created by the system, simply specify the value 'admin' or leave the variable undefined. |
-| **BOCA_LOCAL_USERS** | user1,user2,...,userN            | Optional. Defines which users will authenticate using the default method (password). Useful for cases where you want to register a user who does not have an account in the institution's LDAP server and also for cases where the administrator wants to have a view of another type of user for testing purposes. |
-| **LDAP_SERVER**      | ldap://ldap:389         | LDAP server URI. |
-| **LDAP_BASE_DN**     | dc=inf,dc=ufes,dc=br   | LDAP server Base DN. |
-| **LDAP_USER**        | cn=admin,dc=inf,dc=ufes,dc=br   | User with read permissions on the LDAP server. |
-| **LDAP_PASSWORD**    | <user_password>         | Password of the user with read permissions on the LDAP server. |
+| **BOCA_AUTH_METHOD** | ldap                    | Defines the authentication method as LDAP. |
+| **BOCA_SYSTEM_USER** | <ldap_user_uid> | Optional. Defines a single user with _system_ type permissions that can create and activate programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professorum** for a LDAP user defined as _uid=professorum,ou=professor,dc=inf,dc=ufes,dc=br_. If not set the application will consider the regular **system** user, which authenticates using the default password method. |
+| **BOCA_ADMIN_USER**  | <ldap_user_uid> | Optional. Defines a single user with _admin_ type permissions that can manage programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professordois** for a LDAP user defined as _uid=professordois,ou=professor,dc=inf,dc=ufes,dc=br_. If not set the application will consider the regular **admin** user, which authenticates using the default password method. |
+| **BOCA_LOCAL_USERS** | user1,user2,...,userN | Optional. Defines a list of users that will authenticate using the default method (password). Length and characters restrictions apply (see [Relevant Information](#relevant-information)). Useful for cases in which you want to register a user who does not have an account in the institution's LDAP server or when you want to have a view of another type of user for testing purposes. Keep in mind that these users will not be created automatically (must be inserted manually by the administrator), unless the user name is the same used in the `BOCA_SYSTEM_USER` or `BOCA_ADMIN_USER` environment variables. |
+| **LDAP_SERVER** | ldap://<ldap_url>:<ldap_port> | LDAP server URL and port. |
+| **LDAP_BASE_DN** | dc=inf,dc=ufes,dc=br | LDAP server Base DN. |
+| **LDAP_USER** | cn=admin,dc=inf,dc=ufes,dc=br | User with read permissions on the LDAP server. |
+| **LDAP_PASSWORD** | <user_password> | Password of the user with read permissions on the LDAP server. |
 
 ### Case 2: Google Authentication
 1. **Creating a Project in Google Console:**
