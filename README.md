@@ -74,7 +74,7 @@ This work started as part of the undergraduate final year project carried out by
   docker compose up -d --build
   ```
 
-* Voilà! The application should be running now. Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _system_ | password: _boca_). Then, login as admin (user: _admin_ | password: _boca_) to manage users, problems, languages etc.
+* Voilà! The application should be running now. Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _system_ | password: _boca_). Then, login as admin (user: _admin_ | password: _boca_) to manage users, problems, languages etc.;
 
 * To stop the application (considering that the shell is in the same directory):
 
@@ -89,37 +89,37 @@ The configuration of the authentication method hinges on a collection of environ
 ### Case 1: LDAP Authentication
 - **Defining Environment Variables:**
 
-| Name                | Values                   | Description                                            |
-|---------------------|---------------------------|--------------------------------------------------------|
-| **BOCA_AUTH_METHOD** | ldap                    | Defines the authentication method as LDAP. |
+| Name | Values | Description |
+|---|---|---|
+| **BOCA_AUTH_METHOD** | ldap | Defines the authentication method as LDAP. |
 | **BOCA_SYSTEM_USER** | <ldap_user_uid> | Optional. Defines a single user with _system_ type permissions that can create and activate programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professorum** for a LDAP user defined as _uid=professorum,ou=professor,dc=inf,dc=ufes,dc=br_. If not set the application will consider the regular **system** user, which authenticates using the default password method. |
-| **BOCA_ADMIN_USER**  | <ldap_user_uid> | Optional. Defines a single user with _admin_ type permissions that can manage programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professordois** for a LDAP user defined as _uid=professordois,ou=professor,dc=inf,dc=ufes,dc=br_. If not set the application will consider the regular **admin** user, which authenticates using the default password method. |
+| **BOCA_ADMIN_USER** | <ldap_user_uid> | Optional. Defines a single user with _admin_ type permissions that can manage programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professordois** for a LDAP user defined as _uid=professordois,ou=professor,dc=inf,dc=ufes,dc=br_. If not set the application will consider the regular **admin** user, which authenticates using the default password method. |
 | **BOCA_LOCAL_USERS** | user1,user2,...,userN | Optional. Defines a list of users that will authenticate using the default method (password). Length and characters restrictions apply (see [Relevant Information](#relevant-information)). Useful for cases in which you want to register a user who does not have an account in the institution's LDAP server or when you want to have a view of another type of user for testing purposes. Keep in mind that these users will not be created automatically (must be inserted manually by the administrator), unless the user name is the same used in the `BOCA_SYSTEM_USER` or `BOCA_ADMIN_USER` environment variables. |
 | **LDAP_SERVER** | ldap://<ldap_url>:<ldap_port> | LDAP server URL and port. |
-| **LDAP_BASE_DN** | dc=inf,dc=ufes,dc=br | LDAP server Base DN. |
-| **LDAP_USER** | cn=admin,dc=inf,dc=ufes,dc=br | User with read permissions on the LDAP server. |
-| **LDAP_PASSWORD** | <user_password> | Password of the user with read permissions on the LDAP server. |
+| **LDAP_BASE_DN** | <ldap_base_dn> | LDAP server Base DN. For example, _dc=inf,dc=ufes,dc=br_. |
+| **LDAP_USER** | <ldap_user> | User with read permissions on the LDAP server. For instance, _cn=admin,dc=inf,dc=ufes,dc=br_ |
+| **LDAP_PASSWORD** | <ldap_user_password> | Password of the user with read permissions on the LDAP server. |
 
 ### Case 2: Google Authentication
 1. **Creating a Project in Google Console:**
-    - Go to the [Google Console](https://console.cloud.google.com/) and create a new project.
-    - In the project settings page, click on **APIs & Services**, and then **Credentials**.
-    - Click on **Create credentials** and select **OAuth client ID**.
-    - Choose **Web application** and fill in the **Name** and **Authorized JavaScript origins** fields with the address of the server where BOCA will be deployed.
-    - Fill in the **Authorized redirect URIs** field with the address of the server where BOCA will be deployed, followed by the path `/boca/index.php`, for example: `http://localhost:8001/boca/index.php`.
-    - Click **Create** and copy the **Client ID** and **Client Secret**.
+    - Go to the [Google Console](https://console.cloud.google.com/) and create a new project;
+    - In the project settings page, click on **APIs & Services**, and then on **OAuth consent screen**. Fill in the form accordingly;
+    - Click on **Credentials**, then on **Create credentials** and select **OAuth client ID**;
+    - Choose **Web application** and fill in the **Name** and **Authorized JavaScript origins** fields with the address of the server where BOCA will be deployed;
+    - Fill in the **Authorized redirect URIs** field with the address of the server where BOCA will be deployed, followed by the path `/boca/index.php`, for example: `http://localhost:8001/boca/index.php`;
+    - Click **Create**, copy the **Client ID** and **Client Secret**, and use to set the respective environment variables.
 
 2. **Defining Environment Variables:**
 
-| Name                  | Values               | Description                                              |
-|-----------------------|-----------------------|----------------------------------------------------------|
-| **BOCA_AUTH_METHOD**  | google                | Variable that defines the global authentication method. |
-| **BOCA_SYSTEM_USER**  | system - <email_until_at> | Optional. Defines the user with "system" type permissions. When you want to define a user capable of authenticating with Google, you should provide the user's email up to the '@' character, for example: john_doe@gmail.com -> `BOCA_SYSTEM_USER=john_doe`. If you wish to use the default system user created by the system, simply specify the value 'system' or leave the variable undefined. |
-| **BOCA_ADMIN_USER**   | admin - <email_until_at>  | Optional. Defines the user with "admin" type permissions. When you want to define a user capable of authenticating with Google, you should provide the user's email up to the '@' character, for example: john_doe@gmail.com -> `BOCA_ADMIN_USER=john_doe`. If you wish to use the default admin user created by the system, simply specify the value 'admin' or leave the variable undefined. |
-| **BOCA_LOCAL_USERS**  | user1,user2,...,userN        | Optional. Defines which users will authenticate using the default method (password). Useful for cases where you want to register a user who does not have an institution account and also for cases where the administrator wants to have a view of another type of user for testing purposes. |
+| Name | Values | Description |
+|---|---|---|
+| **BOCA_AUTH_METHOD** | google | Defines the authentication method as Google. |
+| **BOCA_SYSTEM_USER** | <email_until_at> | Optional. Defines the user with "system" type permissions. When you want to define a user capable of authenticating with Google, you should provide the user's email up to the '@' character, for example: john_doe@gmail.com -> `BOCA_SYSTEM_USER=john_doe`. If you wish to use the default system user created by the system, simply specify the value 'system' or leave the variable undefined. |
+| **BOCA_ADMIN_USER** | <email_until_at>  | Optional. Defines the user with "admin" type permissions. When you want to define a user capable of authenticating with Google, you should provide the user's email up to the '@' character, for example: john_doe@gmail.com -> `BOCA_ADMIN_USER=john_doe`. If you wish to use the default admin user created by the system, simply specify the value 'admin' or leave the variable undefined. |
+| **BOCA_LOCAL_USERS** | user1,user2,...,userN | Optional. Defines which users will authenticate using the default method (password). Useful for cases where you want to register a user who does not have an institution account and also for cases where the administrator wants to have a view of another type of user for testing purposes. |
 | **BOCA_AUTH_ALLOWED_DOMAINS** | university.domain_1, university.domain_2,... | Optional. Defines the allowed special domains for authentication. When not defined, all domains are allowed. If you wish to allow multiple domains, you should separate them by commas, for example: `BOCA_AUTH_ALLOWED_DOMAINS=edu.ufes.br,ufes.br`. |
-| **GOOGLE_CLIENT_ID**  | <client_id>           | Client ID generated by Google Console. |
-| **GOOGLE_CLIENT_SECRET** | <client_secret>     | Client Secret generated by Google Console. |
+| **GOOGLE_CLIENT_ID** | <client_id> | Client ID generated by Google Console. |
+| **GOOGLE_CLIENT_SECRET** | <client_secret> | Client Secret generated by Google Console. |
 
 ## Relevant Information
 
