@@ -100,7 +100,7 @@ The configuration of the authentication method hinges on a collection of environ
 | **LDAP_USER** | <ldap_user> | User with read permissions on the LDAP server. For instance, **cn=admin,dc=inf,dc=ufes,dc=br**. |
 | **LDAP_PASSWORD** | <ldap_user_password> | Password of the user with read permissions on the LDAP server. |
 
-### Method 2: Google Authentication
+### Method 2: Google OAuth 2.0 Authentication
 1. **Creating a Project in Google Console:**
     - Go to the [Google Console](https://console.cloud.google.com/) and create a new project;
     - In the project settings page, click on **APIs & Services**, and then on **OAuth consent screen**. Fill in the form accordingly;
@@ -123,7 +123,7 @@ The configuration of the authentication method hinges on a collection of environ
 
 ## Relevant Information
 
-- If `BOCA_SYSTEM_USER` and/or `BOCA_ADMIN_USER` are undefined, set with the default values (_system_ and _admin_, respectively) or their values also included in the `BOCA_LOCAL_USERS`, these users will be created and authenticate using the default method (password). This means that these variables must be used carefully as they cab bypass the `BOCA_AUTH_METHOD` env variable;
+- If `BOCA_SYSTEM_USER` and/or `BOCA_ADMIN_USER` are undefined, set with the default values (_system_ and _admin_, respectively) or have their values also included in the `BOCA_LOCAL_USERS`, the users will be created automatically and authenticate using the default method (password). This means that these variables must be used carefully as they can bypass the value in the `BOCA_AUTH_METHOD` env variable;
 
 - `BOCA_SYSTEM_USER` and `BOCA_ADMIN_USER` must be different because BOCA does not allow users to accumulate multiple roles;
 
