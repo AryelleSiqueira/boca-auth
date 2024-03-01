@@ -17,8 +17,8 @@
 - [Requirements](#requirements)
 - [Quick Start](#quick-start)
 - [How To Add Custom Configuration](#how-to-add-custom-configuration)
-  - [LDAP Authentication](#case-2-ldap-authentication)
-  - [Google Authentication](#case-1-google-authentication)
+  - [LDAP Authentication](#method-1-ldap-authentication)
+  - [Google Authentication](#method-2-google-oauth-20-authentication)
 - [Relevant Information](#relevant-information)
 - [How To Contribute](#how-to-contribute)
 - [License](#license)
@@ -47,7 +47,7 @@ This work started as part of the undergraduate final year project carried out by
 #### LDAP Authentication
 ![Alt text](/imgs/ldap-auth.png "BOCA authentication against LDAP")
 
-#### Google Authentication
+#### Google OAuth 2.0 Authentication
 ![Alt text](/imgs/google-auth.png "BOCA authentication against Google")
 
 ## Requirements
