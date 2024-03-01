@@ -123,7 +123,7 @@ The configuration of the authentication method hinges on a collection of environ
 
 ## Relevant Information
 
-- If `BOCA_AUTH_METHOD` is undefined or set as **password**, the default authentication method applies and all environment variable are ignored;
+- If `BOCA_AUTH_METHOD` is undefined or set as **password**, the default authentication method applies and the LDAP and Google environment variables are ignored;
 
 - If `BOCA_SYSTEM_USER` and/or `BOCA_ADMIN_USER` are undefined, set with the default values (_system_ and _admin_, respectively) or have their values also included in the `BOCA_LOCAL_USERS`, the users will be created automatically and will authenticate using the default method (password). This means that these variables must be used carefully as they can bypass the value in the `BOCA_AUTH_METHOD` env variable;
 
