@@ -71,16 +71,18 @@ This work started as part of the undergraduate final year project carried out by
   ```sh
   git clone https://github.com/aryellesiqueira/boca-auth.git
   cd boca-auth
-  docker compose up -d --build
+  docker compose -f docker-compose.ldap.yml up -d --build
   ```
 
-* Voilà! The application should be running now. Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _system_ | password: _boca_). Then, login as admin (user: _admin_ | password: _boca_) to manage users, problems, languages etc.;
+* Voilà! The application should be running now. Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _professorum_ | password: _professorum_). Then, login as admin (user: _professordois_ | password: _professordois_) to manage users, problems, languages etc.;
 
 * To stop the application (considering that the shell is in the same directory):
 
   ```sh
-  docker compose down
+  docker compose -f docker-compose.ldap.yml down
   ```
+
+> **NOTE:** In order to try out the default authentication method refer to the `docker-compose.password.yml` file, while for the Google OAuth 2.0 authentication use the `docker-compose.google.yml` (it needs to be modified as indicated below).
 
 ## How To Add Custom Configuration
 
