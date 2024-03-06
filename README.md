@@ -127,9 +127,11 @@ The configuration of the authentication method hinges on a collection of environ
 
 - If `BOCA_AUTH_METHOD` is undefined or set as **password**, the default authentication method applies and the LDAP and Google environment variables are ignored;
 
-- If `BOCA_SYSTEM_USER` and/or `BOCA_ADMIN_USER` are undefined, set with the default values (_system_ and _admin_, respectively) or have their values also included in the `BOCA_LOCAL_USERS`, the users will be created automatically and will authenticate using the default method (password). This means that these variables must be used carefully as they can bypass the value in the `BOCA_AUTH_METHOD` env variable;
+- If `BOCA_SYSTEM_USER` and/or `BOCA_ADMIN_USER` are undefined, set with the default values (_system_ and _admin_, respectively) or have their values also included in the `BOCA_LOCAL_USERS`, these users will be created automatically and will authenticate using the default method (password). This means that these variables must be used carefully as they can bypass the value in the `BOCA_AUTH_METHOD` env variable;
 
 - `BOCA_SYSTEM_USER` and `BOCA_ADMIN_USER` must be different because BOCA does not allow for users to accumulate multiple roles;
+
+- The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (web app). If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
 
 - When using LDAP authentication method, user's credentials will be sent to the server in the body of the request in plain text format. Therefore, it is recommended to use this method only when the connection between client and server is secure, for example, using SSL certificates;
 
