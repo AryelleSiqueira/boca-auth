@@ -54,9 +54,17 @@ services:
             # or BOCA_ADMIN_USER env variables.
             - BOCA_LOCAL_TEAM_USER=aluno
             # configuration options for Google authentication
-            # BOCA_AUTH_ALLOWED_DOMAINS must be undefined for at gmail.com
+            # defines a list of comma-separated domains using Google OAuth 2.0
+            # to authenticate users (e.g., an university domain). If not set
+            # the application will consider as default the gmail.com.
             # - BOCA_AUTH_ALLOWED_DOMAINS=edu.ufes.br,ufes.br
-        # passing GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET env vars from file
+            # Client ID and Client Secret generated via Google Console.
+            # example 1: passing GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET env
+            # vars directly in docker-compose.
+            # - GOOGLE_CLIENT_ID=<client_id>
+            # - GOOGLE_CLIENT_SECRET=<client_secret>
+        # example 2: passing GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET env vars
+        # from file.
         env_file:
             - .env.google
         ports: 

@@ -89,10 +89,14 @@ services:
             # or BOCA_ADMIN_USER env variables.
             - BOCA_LOCAL_USERS=aluno
             # configuration options for LDAP authentication
+            # example 1: passing LDAP env vars directly in docker-compose.
             - LDAP_SERVER=ldap://ldap:389
             - LDAP_BASE_DN=dc=inf,dc=ufes,dc=br
             - LDAP_USER=cn=admin,dc=inf,dc=ufes,dc=br
             - LDAP_PASSWORD=ldappw
+        # example 2: passing LDAP env vars from file.
+        # env_file:
+        #     - .env.ldap
         ports: 
             - 8001:80
         volumes:
