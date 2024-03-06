@@ -131,7 +131,7 @@ The configuration of the authentication method hinges on a collection of environ
 
 - `BOCA_SYSTEM_USER` and `BOCA_ADMIN_USER` must be different because BOCA does not allow for users to accumulate multiple roles;
 
-- The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (web app). If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
+- The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (see documentation [here](https://github.com/rlaiola/boca-docker/blob/master/tests/env/README.md)). If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
 
 - When using LDAP authentication method, user's credentials will be sent to the server in the body of the request in plain text format. Therefore, it is recommended to use this method only when the connection between client and server is secure, for example, using SSL certificates;
 
