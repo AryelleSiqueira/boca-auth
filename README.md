@@ -133,7 +133,19 @@ The configuration of the authentication method hinges on a collection of environ
 
 - The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (see documentation [here](https://github.com/rlaiola/boca-docker/blob/master/tests/env/README.md)). If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
 
-- When using LDAP authentication method, user's credentials will be sent to the server in the body of the request in plain text format. Therefore, it is recommended to use this method only when the connection between client and server is secure, for example, using SSL certificates;
+- When using LDAP authentication, user's credentials will be sent to the server in the body of the request in plain text format. Therefore, it is recommended to use this method only when the connection between client and server is secure, for example, using SSL certificates. To add a LDAP server's SSL certificate to BOCA, simply map it using volumes to the following path inside the container:
+
+  ```yaml
+  ...
+    # web app
+    boca-web:
+      ...
+      volumes:
+        ...
+        - ./ldap_server_cert.pem:/etc/ssl/certs/ca-certificates.crt
+      ...
+  ...
+  ```
 
 - There is a size restriction for the username in the BOCA database, limiting it to a maximum of 20 characters. This puts a contraint particularly on the use of the full email address in the Google authentication method. Therefore, only the email username (part before the "at" sign) is considered. This design decision is not ideal for scenarios in which BOCA users come from different domains. For example, suppose BOCA allows the domains _edu.ufes.br_ and _ufes.br_. If a student has an email address like _alunoum@ufes.br_, she will be registered as **alunoum**. Nonetheless, there might exist a _alunoum@edu.ufes.br_, which belongs to a different person, and as a result, two distinct accounts can be used to authenticate the same BOCA user. Some potential issues: (1) if the email accounts belong to two different students in the same course, it will not be possible to create accounts for both as BCOA usernames are unique; (2) if the email accounts belong to two different students, with only one of them being registered in the course, it will be possible for an unauthorized user to authenticate. That said, use the `BOCA_AUTH_ALLOWED_DOMAINS` env variable wisely;
 
