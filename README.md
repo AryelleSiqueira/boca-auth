@@ -19,7 +19,8 @@
 - [How To Add Custom Configuration](#how-to-add-custom-configuration)
   - [LDAP Authentication](#method-1-ldap-authentication)
   - [Google Authentication](#method-2-google-oauth-20-authentication)
-- [Relevant Information](#relevant-information)
+  - [Relevant Information](#relevant-information)
+- [How To Patch Features To BOCA](#how-to-patch-features-to-boca)
 - [How To Contribute](#how-to-contribute)
 - [License](#license)
 - [Support](#support)
@@ -123,7 +124,7 @@ The configuration of the authentication method hinges on a collection of environ
 | **GOOGLE_CLIENT_ID** | <client_id> | Client ID generated in Google Console. |
 | **GOOGLE_CLIENT_SECRET** | <client_secret> | Client Secret generated in Google Console. |
 
-## Relevant Information
+### Relevant Information
 
 - If `BOCA_AUTH_METHOD` is undefined or set as **password**, the default authentication method applies and the LDAP and Google environment variables are ignored;
 
@@ -148,6 +149,27 @@ The configuration of the authentication method hinges on a collection of environ
   ```
 
 - There is a size restriction for the username in the BOCA database, limiting it to a maximum of 20 characters. This puts a contraint particularly on the use of the full email address in the Google authentication method. Therefore, only the email username (part before the "at" sign) is considered. This design decision is not ideal for scenarios in which BOCA users come from different domains. For example, suppose BOCA allows the domains _edu.ufes.br_ and _ufes.br_. If a student has an email address like _alunoum@ufes.br_, she will be registered as **alunoum**. Nonetheless, there might exist a _alunoum@edu.ufes.br_, which belongs to a different person, and as a result, two distinct accounts can be used to authenticate the same BOCA user. Some potential issues: (1) if the email accounts belong to two different students in the same course, it will not be possible to create accounts for both as BCOA usernames are unique; (2) if the email accounts belong to two different students, with only one of them being registered in the course, it will be possible for an unauthorized user to authenticate. That said, use the `BOCA_AUTH_ALLOWED_DOMAINS` env variable wisely;
+
+## How To Patch Features To BOCA
+
+Run the following commands to 1) git pull the _master_ branch from the `boca-auth` repository, 2) generate and patch apply changes in the _master_ branch of the `boca` repository.
+
+  ```sh
+  git clone https://github.com/cassiopc/boca.git && \
+  cd boca && \
+  # Make sure that there are no unstaged changes in the BOCA repository
+  git status && \
+  git remote add boca-auth_fork https://github.com/aryellesiqueira/boca-auth.git && \
+  git fetch boca-auth_fork master && \
+  git checkout -b boca-auth_branch boca-auth_fork/master && \
+  git branch -a && \
+  git diff --diff-filter=ACMRT master boca-auth_branch src/ > ../patchfile_boca-auth && \
+  git checkout master && \
+  git apply ../patchfile_boca-auth && \
+  rm ../patchfile_boca-auth
+  ```
+
+If you do not need/want to track future changes in the `boca-auth` repository run `git remote remove boca-auth_fork`.
 
 ## How To Contribute
 
