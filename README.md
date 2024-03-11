@@ -27,7 +27,8 @@
 
 ## What Is BOCA?
 
-The BOCA Online Contest Administrator, commonly referred to as BOCA, is a robust administrative system designed for orchestrating programming contests following the [ACM-ICPC](https://icpc.global/) rules, particularly the [Maratona SBC de Programação](https://maratona.sbc.org.br/). BOCA represents a powerful tool for streamlining the administration of programming contests, making it a valuable asset for contest organizers and participants.
+The BOCA Online Contest Administrator, commonly referred to as BOCA, is a robust administrative system designed for orchestrating programming contests following the [ACM-ICPC](https://icpc.global/) rules, particularly the [Maratona SBC de Programação](https://maratona.sbc.org.br/).
+BOCA represents a powerful tool for streamlining the administration of programming contests, making it a valuable asset for contest organizers and participants.
 For more in-depth information, please visit the official repository at [https://github.com/cassiopc/boca](https://github.com/cassiopc/boca).
 
 In order to grant access to the system, it is imperative to ascertain whether the user attempting to connect possesses the necessary credentials. At present, BOCA's sole authentication method mandates that a user's provided password undergo encryption before transmission across the connection and storage in the database.
@@ -42,13 +43,13 @@ This work started as part of the undergraduate final year project carried out by
 
 ## How Does It Work?
 
-#### Default Authentication
+### Default Authentication
 ![Alt text](/imgs/default-auth.png "BOCA default authentication")
 
-#### LDAP Authentication
+### LDAP Authentication
 ![Alt text](/imgs/ldap-auth.png "BOCA authentication against LDAP")
 
-#### Google OAuth 2.0 Authentication
+### Google OAuth 2.0 Authentication
 ![Alt text](/imgs/google-auth.png "BOCA authentication against Google")
 
 ## Requirements
@@ -62,7 +63,7 @@ This work started as part of the undergraduate final year project carried out by
 
   ```sh
   # List docker images
-  docker images -a
+  docker image ls
   # List containers
   docker container ls -a
   ```
@@ -95,9 +96,13 @@ The configuration of the authentication method hinges on a collection of environ
 | Name | Values | Description |
 |---|---|---|
 | **BOCA_AUTH_METHOD** | ldap | Defines the authentication method as LDAP. |
-| **BOCA_SYSTEM_USER** | <ldap_user_uid> | Optional. Defines a single user with _system_ type permissions that can create and activate programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professorum** for a LDAP user defined as _uid=professorum,ou=professor,dc=inf,dc=ufes,dc=br_. If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **system** user with the local password authentication applies. |
-| **BOCA_ADMIN_USER** | <ldap_user_uid> | Optional. Defines a single user with _admin_ type permissions that can manage programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professordois** for a LDAP user defined as _uid=professordois,ou=professor,dc=inf,dc=ufes,dc=br_. If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **admin** user with the local password authentication applies. |
-| **BOCA_LOCAL_USERS** | <user1,user2,...,userN> | Optional. Defines a list of comma-separated users that will authenticate using the default method (password). Length and characters restrictions may apply (see [Relevant Information](#relevant-information)). Useful for cases in which you want to register a user who does not have an account in the institution's LDAP server or when you want to have a view of another type of user for testing purposes. Keep in mind that these users will not be created automatically (must be inserted manually by the administrator), unless the user name is the same used in the `BOCA_SYSTEM_USER` or `BOCA_ADMIN_USER` environment variables. |
+| **BOCA_SYSTEM_USER** | <ldap_user_uid> | Optional. Defines a single user with _system_ type permissions that can create and activate programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_.
+For instance, that would be **professorum** for a LDAP user defined as _uid=professorum,ou=professor,dc=inf,dc=ufes,dc=br_.
+If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **system** user with the local password authentication applies. |
+| **BOCA_ADMIN_USER** | <ldap_user_uid> | Optional. Defines a single user with _admin_ type permissions that can manage programming contests. Provide the user name (UID) of an user capable of authenticating with the LDAP server. Valid characters are: a-z,A-Z,0-9, @.-\_. For instance, that would be **professordois** for a LDAP user defined as _uid=professordois,ou=professor,dc=inf,dc=ufes,dc=br_.
+If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **admin** user with the local password authentication applies. |
+| **BOCA_LOCAL_USERS** | <user1,user2,...,userN> | Optional. Defines a list of comma-separated users that will authenticate using the default method (password). Length and characters restrictions may apply (see [Relevant Information](#relevant-information)). Useful for cases in which you want to register a user who does not have an account in the institution's LDAP server or when you want to have a view of another type of user for testing purposes.
+Keep in mind that these users will not be created automatically (must be inserted manually by the administrator), unless the user name is the same used in the `BOCA_SYSTEM_USER` or `BOCA_ADMIN_USER` environment variables. |
 | **LDAP_SERVER** | ldap://<ldap_url>:<ldap_port> | LDAP server URL and port. |
 | **LDAP_BASE_DN** | <ldap_base_dn> | LDAP server Base DN. For example, **dc=inf,dc=ufes,dc=br**. |
 | **LDAP_USER** | <ldap_user> | User with read permissions on the LDAP server. For instance, **cn=admin,dc=inf,dc=ufes,dc=br**. |
@@ -117,9 +122,12 @@ The configuration of the authentication method hinges on a collection of environ
 | Name | Values | Description |
 |---|---|---|
 | **BOCA_AUTH_METHOD** | google | Defines the authentication method as Google. |
-| **BOCA_SYSTEM_USER** | <email_username> | Optional. Defines a single user with _system_ type permissions that can create and activate programming contests. Provide the email username (part before the "at" sign) of an user capable of authenticating with Google. For instance, that would be **john_doe** for _john_doe@gmail.com_. If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **system** user with the local password authentication applies. |
-| **BOCA_ADMIN_USER** | <email_username> | Optional. Defines a single user with _admin_ type permissions that can manage programming contests. Provide the email username (part before the "at" sign) of an user capable of authenticating with Google. For instance, that would be **john_doe** for _john_doe@gmail.com_. If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **admin** user with the local password authentication applies. |
-| **BOCA_LOCAL_USERS** | <user1,user2,...,userN> | Optional. Defines a list of comma-separated users that will authenticate using the default method (password). Length and characters restrictions may apply (see [Relevant Information](#relevant-information)). Useful for cases in which you want to register a user who does not have an account in the institution's LDAP server or when you want to have a view of another type of user for testing purposes. Keep in mind that these users will not be created automatically (must be inserted manually by the administrator), unless the user name is the same used in the `BOCA_SYSTEM_USER` or `BOCA_ADMIN_USER` environment variables. |
+| **BOCA_SYSTEM_USER** | <email_username> | Optional. Defines a single user with _system_ type permissions that can create and activate programming contests. Provide the email username (part before the "at" sign) of an user capable of authenticating with Google.
+For instance, that would be **john_doe** for _john_doe@gmail.com_. If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **system** user with the local password authentication applies. |
+| **BOCA_ADMIN_USER** | <email_username> | Optional. Defines a single user with _admin_ type permissions that can manage programming contests. Provide the email username (part before the "at" sign) of an user capable of authenticating with Google.
+For instance, that would be **john_doe** for _john_doe@gmail.com_. If the variable is set and the value also included in `BOCA_LOCAL_USERS`, the user will be created and authenticate with the default method (password). If not set, the regular **admin** user with the local password authentication applies. |
+| **BOCA_LOCAL_USERS** | <user1,user2,...,userN> | Optional. Defines a list of comma-separated users that will authenticate using the default method (password). Length and characters restrictions may apply (see [Relevant Information](#relevant-information)). Useful for cases in which you want to register a user who does not have an account in the institution's LDAP server or when you want to have a view of another type of user for testing purposes.
+Keep in mind that these users will not be created automatically (must be inserted manually by the administrator), unless the user name is the same used in the `BOCA_SYSTEM_USER` or `BOCA_ADMIN_USER` environment variables. |
 | **BOCA_AUTH_ALLOWED_DOMAINS** | <domain_1,domain_2,...> | Optional. Defines a list of comma-separated domains using Google OAuth 2.0 to authenticate users (e.g., an university domain). If not set the application will consider as default the _gmail.com_. |
 | **GOOGLE_CLIENT_ID** | <client_id> | Client ID generated in Google Console. |
 | **GOOGLE_CLIENT_SECRET** | <client_secret> | Client Secret generated in Google Console. |
@@ -132,7 +140,8 @@ The configuration of the authentication method hinges on a collection of environ
 
 - `BOCA_SYSTEM_USER` and `BOCA_ADMIN_USER` must be different because BOCA does not allow for users to accumulate multiple roles;
 
-- The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (see documentation [here](https://github.com/rlaiola/boca-docker/blob/master/tests/env/README.md)). If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
+- The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (see documentation [here](https://github.com/rlaiola/boca-docker/blob/master/tests/env/README.md)).
+If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
 
 - When using LDAP authentication, user's credentials will be sent to the server in the body of the request in plain text format. Therefore, it is recommended to use this method only when the connection between client and server is secure, for example, using SSL certificates. To add a LDAP server's SSL certificate to BOCA, simply map it using volumes to the following path inside the container:
 
@@ -148,7 +157,9 @@ The configuration of the authentication method hinges on a collection of environ
   ...
   ```
 
-- There is a size restriction for the username in the BOCA database, limiting it to a maximum of 20 characters. This puts a contraint particularly on the use of the full email address in the Google authentication method. Therefore, only the email username (part before the "at" sign) is considered. This design decision is not ideal for scenarios in which BOCA users come from different domains. For example, suppose BOCA allows the domains _edu.ufes.br_ and _ufes.br_. If a student has an email address like _alunoum@ufes.br_, she will be registered as **alunoum**. Nonetheless, there might exist a _alunoum@edu.ufes.br_, which belongs to a different person, and as a result, two distinct accounts can be used to authenticate the same BOCA user. Some potential issues: (1) if the email accounts belong to two different students in the same course, it will not be possible to create accounts for both as BCOA usernames are unique; (2) if the email accounts belong to two different students, with only one of them being registered in the course, it will be possible for an unauthorized user to authenticate. That said, use the `BOCA_AUTH_ALLOWED_DOMAINS` env variable wisely;
+- There is a size restriction for the username in the BOCA database, limiting it to a maximum of 20 characters. This puts a contraint particularly on the use of the full email address in the Google authentication method. Therefore, only the email username (part before the "at" sign) is considered. This design decision is not ideal for scenarios in which BOCA users come from different domains.
+For example, suppose BOCA allows the domains _edu.ufes.br_ and _ufes.br_. If a student has an email address like _alunoum@ufes.br_, she will be registered as **alunoum**. Nonetheless, there might exist a _alunoum@edu.ufes.br_, which belongs to a different person, and as a result, two distinct accounts can be used to authenticate the same BOCA user.
+Some potential issues: (1) if the email accounts belong to two different students in the same course, it will not be possible to create accounts for both as BCOA usernames are unique; (2) if the email accounts belong to two different students, with only one of them being registered in the course, it will be possible for an unauthorized user to authenticate. That said, use the `BOCA_AUTH_ALLOWED_DOMAINS` env variable wisely;
 
 ## How To Patch Features To BOCA
 
