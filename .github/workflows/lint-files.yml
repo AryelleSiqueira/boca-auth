@@ -12,7 +12,7 @@ name: Lint code base
 on:
   # Run on all pushes (except on master/main branch)
   push:
-    branches-ignore: [master, main]
+    # branches-ignore: [master, main]
     # Remove the line above to run when pushing to master
   # PRs on master/main branch
   pull_request:
