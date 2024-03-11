@@ -38,7 +38,7 @@ if (!isset($_GET["name"])) {
 	if (ValidSession())
 	  DBLogOut($_SESSION["usertable"]["contestnumber"], 
 		   $_SESSION["usertable"]["usersitenumber"], $_SESSION["usertable"]["usernumber"],
-		   $_SESSION["usertable"]["username"]=='admin');
+		   $_SESSION["usertable"]["usertype"]=='admin');
 	session_unset();
 	session_destroy();
 	session_start();
