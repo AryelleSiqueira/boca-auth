@@ -28,7 +28,7 @@ services:
         image: osixia/openldap:1.3.0
         container_name: ldap
         volumes:
-            - ./ldap:/container/service/slapd/assets/config/bootstrap/ldif/custom
+            - ./data.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/data.ldif
         # command: --copy-service -l debug
         command: --copy-service
         environment: 
