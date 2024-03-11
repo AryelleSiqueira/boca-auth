@@ -1086,24 +1086,24 @@ function insertlanguages($n,$c=null) {
 	DBNewLanguage($n, $param, $c);
 }
 function insertanswers($n,$c) {
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 0, 'Not answered yet', 'f', 't')", "DBNewContest(insert fake answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 1, 'YES', 't', 'f')", "DBNewContest(insert YES answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 2, 'NO - Compilation error', 'f', 'f')", "DBNewContest(insert CE answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 3, 'NO - Runtime error', 'f', 'f')", "DBNewContest(insert RE answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 4, 'NO - Time limit exceeded', 'f', 'f')", "DBNewContest(insert TLE answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 5, 'NO - Presentation error', 'f', 'f')", "DBNewContest(insert PE answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 6, 'NO - Wrong answer', 'f', 'f')", "DBNewContest(insert WA answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 7, 'NO - Contact staff', 'f', 'f')", "DBNewContest(insert CS answer)");
-	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, yes, fake) values ".
-			"($n, 8, 'NO - Name mismatch', 'f', 'f')", "DBNewContest(insert MI answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 0, 'Not answered yet', 'NYET', 'f', 't')", "DBNewContest(insert fake answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 1, 'YES', 'YES', 't', 'f')", "DBNewContest(insert YES answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 2, 'NO - Compilation error', 'CE', 'f', 'f')", "DBNewContest(insert CE answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 3, 'NO - Runtime error', 'RE', 'f', 'f')", "DBNewContest(insert RE answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 4, 'NO - Time limit exceeded', 'TLE','f', 'f')", "DBNewContest(insert TLE answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 5, 'NO - Presentation error', 'PE', 'f', 'f')", "DBNewContest(insert PE answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 6, 'NO - Wrong answer', 'WA', 'f', 'f')", "DBNewContest(insert WA answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 7, 'NO - Contact staff', 'CS', 'f', 'f')", "DBNewContest(insert CS answer)");
+	DBExec($c, "insert into answertable (contestnumber, answernumber, runanswer, shortname, yes, fake) values ".
+			"($n, 8, 'NO - Name mismatch', 'NMI', 'f', 'f')", "DBNewContest(insert MI answer)");
 }
 function DBNewSite ($contest, $c=null, $param=array()) {
 	$cw = false;
@@ -1193,7 +1193,11 @@ function DBUserUpdate($contest, $site, $user, $username, $userfull, $userdesc, $
 		MSGError ("Incorrect password.");
 	}
 	else { 
-		if(!$a['changepassword']) {
+		// Always enable password change for BOCA_LOCAL_USERS via UI
+		$authMethod = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+		$localUsers = [...explode(",", getenv("BOCA_LOCAL_USERS")), ...array("system", "admin")];
+		if ($authMethod != "password" && in_array($username, $localUsers));
+		elseif(!$a['changepassword']) {
 			MSGError('Password change is DISABLED'); return;
 		}
 		if ($a["userpassword"] == "") $temp = myhash("");
@@ -1329,14 +1333,25 @@ function DBNewUser($param, $c=null) {
 		$a = DBGetRow ($sql, 0, $c);
 		if ($a == null) {
 			$ret=2;
-		  $sql = "select * from sitetable where sitenumber=$site and contestnumber=$contest";
-		  $aa = DBGetRow ($sql, 0, $c);
-		   if($aa==null) {
-		     if($cw)
-		   	DBExec ($c, "rollback work");
-		     MSGError("Site $site does not exist");
-		     return false;
-		   }
+			$sql = "select * from sitetable where sitenumber=$site and contestnumber=$contest";
+			$aa = DBGetRow ($sql, 0, $c);
+			if($aa==null) {
+				if($cw)
+				DBExec ($c, "rollback work");
+				MSGError("Site $site does not exist");
+				return false;
+			}
+
+			// If BOCA_LOCAL_USERS are added via UI, either LDAP or Google auth
+			// methods (!= password), set default password.
+			$authMethod = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+			$localUsers = [...explode(",", getenv("BOCA_LOCAL_USERS")), ...array("system", "admin")];
+			if ($authMethod != "password" && in_array($username, $localUsers)) {
+				$cf=globalconf();
+				$pass=myhash($cf["basepass"]);
+				if ($type != "admin" && $changepass != "t" && substr($pass,0,1) != "!") $pass = '!' . $pass;
+		  	}
+
 			$sql = "insert into usertable (contestnumber, usersitenumber, usernumber, username, usericpcid, userfullname, " .
 				"userdesc, usertype, userenabled, usermultilogin, userpassword, userpermitip) values " .
 				"($contest, $site, $user, '$username', '$usericpcid', '$userfull', '$userdesc', '$type', '$enabled', " .

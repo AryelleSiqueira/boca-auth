@@ -38,7 +38,7 @@ if (!isset($_GET["name"])) {
 	if (ValidSession())
 	  DBLogOut($_SESSION["usertable"]["contestnumber"], 
 		   $_SESSION["usertable"]["usersitenumber"], $_SESSION["usertable"]["usernumber"],
-		   $_SESSION["usertable"]["username"]=='admin');
+		   $_SESSION["usertable"]["usertype"]=='admin');
 	session_unset();
 	session_destroy();
 	session_start();
@@ -114,19 +114,26 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
 
       $userData = $googleClient->data;
       $username = substr($userData->email, 0, strpos($userData->email, '@'));
+      $userdomain = $userData->hd ? $userData->hd : substr($userData->email, strpos($userData->email, '@')+1, strlen($userData->email));
 
-      $allowedDomains = getenv("BOCA_AUTH_ALLOWED_DOMAINS");
+      $allowedDomains = getenv("BOCA_AUTH_ALLOWED_DOMAINS") ? getenv("BOCA_AUTH_ALLOWED_DOMAINS") : "gmail.com";
 
-      if ($allowedDomains) {
-        if (in_array($userData->hd, explode(",", $allowedDomains))) {
+      // echo $userData->email . "<br>";
+      // echo $username . "<br>";
+      // echo $userdomain . "<br>";
+      // echo $allowedDomains . "<br>";
+      // exit;
+
+      // if ($allowedDomains) {
+        if (in_array($userdomain, explode(",", $allowedDomains))) {
           $usertable = DBLogIn($username, null);
         } else {
           $usertable = false;
           MSGError('User is not authorized.');
         }
-      } else {
-        $usertable = DBLogIn($username, null);
-      }
+      // } else {
+      //   $usertable = DBLogIn($username, null);
+      // }
     } 
     else {
       $name = isset($_GET["name"]) ? $_GET["name"] : $_POST["name"];
