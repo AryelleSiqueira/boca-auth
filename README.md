@@ -134,6 +134,8 @@ This means that these variables must be used carefully as they can bypass the va
 
 - `BOCA_SYSTEM_USER` and `BOCA_ADMIN_USER` must be different because BOCA does not allow for users to accumulate multiple roles;
 
+- The `BOCA_LOCAL_USERS` env variable implicitly contains the regular **system** and **admin** users;
+
 - The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (see documentation [here](https://github.com/rlaiola/boca-docker/blob/master/tests/env/README.md)).
 If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
 
