@@ -182,17 +182,17 @@ That said, use the `BOCA_AUTH_ALLOWED_DOMAINS` env variable wisely;
 - Finally, install the dependencies when deploying on the web server (it might require superuser privileges):
 
   ```sh
-  apt-get -y update \
-  && apt-get -y install \
-      php-ldap \
-      curl \
-      unzip \
-      php-curl \
-  && curl -sS https://getcomposer.org/installer -o composer-setup.php \
-  && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-  && composer self-update \
-  && composer require google/apiclient \
-  && rm -rf /var/lib/apt/lists/*
+  apt-get -y update && \
+  apt-get -y install \
+    curl \
+    php-curl \
+    php-ldap \
+    unzip && \
+  curl -sS https://getcomposer.org/installer -o composer-setup.php && \
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
+  composer self-update && \
+  composer require google/apiclient && \
+  rm -rf /var/lib/apt/lists/*
   ```
 
 ## How To Contribute
