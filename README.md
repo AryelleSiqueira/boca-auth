@@ -160,7 +160,7 @@ That said, use the `BOCA_AUTH_ALLOWED_DOMAINS` env variable wisely;
 
 ## How To Patch Features To BOCA
 
-Run the following commands to 1) git pull the _master_ branch from the `boca-auth` repository, 2) generate and patch apply changes in the _master_ branch of the `boca` repository.
+- Run the following commands to 1) git pull the _master_ branch from the `boca-auth` repository and 2) generate and patch apply changes in the _master_ branch of the `boca` repository:
 
   ```sh
   git clone https://github.com/cassiopc/boca.git && \
@@ -177,7 +177,23 @@ Run the following commands to 1) git pull the _master_ branch from the `boca-aut
   rm ../patchfile_boca-auth
   ```
 
-If you do not need/want to track future changes in the `boca-auth` repository run `git remote remove boca-auth_fork`.
+  > **NOTE:** If you do not need/want to track future changes in the `boca-auth` repository run `git remote remove boca-auth_fork`.
+
+- Finally, install the dependencies when deploying on the web server (it might require superuser privileges):
+
+  ```sh
+  apt-get -y update \
+  && apt-get -y install \
+      php-ldap \
+      curl \
+      unzip \
+      php-curl \
+  && curl -sS https://getcomposer.org/installer -o composer-setup.php \
+  && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+  && composer self-update \
+  && composer require google/apiclient \
+  && rm -rf /var/lib/apt/lists/*
+  ```
 
 ## How To Contribute
 
