@@ -44,22 +44,25 @@ This work started as part of the undergraduate final year project carried out by
 ## How Does It Work?
 
 ### Default Authentication
+
 ![Alt text](/imgs/default-auth.png "BOCA default authentication")
 
 ### LDAP Authentication
+
 ![Alt text](/imgs/ldap-auth.png "BOCA authentication against LDAP")
 
 ### Google OAuth 2.0 Authentication
+
 ![Alt text](/imgs/google-auth.png "BOCA authentication against Google")
 
 ## Requirements
 
-* Install [Docker Desktop](https://www.docker.com/get-started);
-* Install [Git](https://github.com/git-guides/install-git).
+- Install [Docker Desktop](https://www.docker.com/get-started);
+- Install [Git](https://github.com/git-guides/install-git).
 
 ## Quick Start
 
-* Open a Terminal window and make sure the Docker engine is up and running:
+- Open a Terminal window and make sure the Docker engine is up and running:
 
   ```sh
   # List docker images
@@ -68,7 +71,7 @@ This work started as part of the undergraduate final year project carried out by
   docker container ls -a
   ```
 
-* Clone this repo and run the following commands:
+- Clone this repo and run the following commands:
 
   ```sh
   git clone https://github.com/aryellesiqueira/boca-auth.git
@@ -76,9 +79,9 @@ This work started as part of the undergraduate final year project carried out by
   docker compose -f docker-compose.ldap.yml up -d --build
   ```
 
-* Voilà! The application should be running now. Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _professorum_ | password: _professorum_). Then, login as admin (user: _professordois_ | password: _professordois_) to manage users, problems, languages etc.;
+- Voilà! The application should be running now. Open a web browser and visit the URL [http://localhost:8001/boca](http://localhost:8001/boca). First, create and activate a BOCA contest (user: _professorum_ | password: _professorum_). Then, login as admin (user: _professordois_ | password: _professordois_) to manage users, problems, languages etc.;
 
-* To stop the application (considering that the shell is in the same directory):
+- To stop the application (considering that the shell is in the same directory):
 
   ```sh
   docker compose -f docker-compose.ldap.yml down
@@ -91,6 +94,7 @@ This work started as part of the undergraduate final year project carried out by
 The configuration of the authentication method hinges on a collection of environment variables in BOCA's web server.
 
 ### Method 1: LDAP Authentication
+
 - **Defining Environment Variables:**
 
 | Name | Values | Description |
@@ -105,6 +109,7 @@ The configuration of the authentication method hinges on a collection of environ
 | **LDAP_PASSWORD** | <ldap_user_password> | Password of the user with read permissions on the LDAP server. |
 
 ### Method 2: Google OAuth 2.0 Authentication
+
 1. **Creating a Project in Google Console:**
     - Go to the [Google Console](https://console.cloud.google.com/) and create a new project;
     - In the project settings page, click on **APIs & Services**, and then on **OAuth consent screen**. Fill in the form accordingly;
@@ -136,7 +141,7 @@ This means that these variables must be used carefully as they can bypass the va
 
 - The `BOCA_LOCAL_USERS` env variable implicitly contains the regular **system** and **admin** users;
 
-- The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (see documentation [here](https://github.com/rlaiola/boca-docker/blob/master/tests/env/README.md)).
+- The initial password for _system_, _admin_, and all the users listed in the `BOCA_LOCAL_USERS` env variable is given by the optional environment variable `BOCA_PASSWORD`, which can be specified in the `boca-web` service (see [documentation](https://github.com/rlaiola/boca-docker/blob/master/tests/env/README.md)).
 If not set, the default value is used (_boca_). These passwords can be individually updated later on via the web interface;
 
 - When using LDAP authentication, user's credentials will be sent to the server in the body of the request in plain text format. Therefore, it is recommended to use this method only when the connection between client and server is secure, for example, using SSL certificates. To add a LDAP server's SSL certificate to BOCA, simply map it using volumes to the following path inside the container:
