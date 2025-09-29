@@ -1,0 +1,9 @@
+{
+  // Disable some built-in rules
+  "config": {
+    "MD013": false // Disables the line-length rule
+  },
+
+  // Define glob expressions to ignore
+  "ignores": [".gitignore", "LICENSE"]
+}
