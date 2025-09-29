@@ -1,8 +1,9 @@
 {
   "config": {
     "MD013": {
+      "line_length": 400,
       "tables": false
-    },
+    }
   },
 
   // Define glob expressions to ignore
