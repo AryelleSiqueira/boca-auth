@@ -1,7 +1,8 @@
 {
-  // Disable some built-in rules
   "config": {
-    "MD013": false // Disables the line-length rule
+    "MD013": {
+      "tables": false
+    },
   },
 
   // Define glob expressions to ignore
