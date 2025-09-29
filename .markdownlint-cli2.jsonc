@@ -1,0 +1,10 @@
+{
+  "config": {
+    "MD013": {
+      "tables": false
+    },
+  },
+
+  // Define glob expressions to ignore
+  "ignores": [".gitignore", "LICENSE"]
+}
