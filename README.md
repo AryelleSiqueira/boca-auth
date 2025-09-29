@@ -97,7 +97,6 @@ The configuration of the authentication method hinges on a collection of environ
 
 - **Defining Environment Variables:**
 
-<!-- markdownlint-disable MD013/line-length -->
 | Name | Values | Description |
 |---|---|---|
 | **BOCA_AUTH_METHOD** | ldap | Defines the authentication method as LDAP. |
@@ -121,7 +120,6 @@ The configuration of the authentication method hinges on a collection of environ
 
 2. **Defining Environment Variables:**
 
-<!-- markdownlint-disable MD013/line-length -->
 | Name | Values | Description |
 |---|---|---|
 | **BOCA_AUTH_METHOD** | google | Defines the authentication method as Google. |
