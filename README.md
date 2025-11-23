@@ -23,9 +23,10 @@
   - [Google Authentication](#method-2-google-oauth-20-authentication)
   - [Relevant Information](#relevant-information)
 - [How To Patch Features To BOCA](#how-to-patch-features-to-boca)
-- [How To Contribute](#how-to-contribute)
+- [Contributing](#contributing)
+- [Code of Conduct](#code-of-conduct)
+- [Security](#security)
 - [License](#license)
-- [Support](#support)
 
 ---
 
