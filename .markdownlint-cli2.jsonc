@@ -29,7 +29,7 @@
   // ],
 
   // Define glob expressions to ignore
-  "ignores": [".gitignore", "LICENSE"]
+  "ignores": [".gitignore", "LICENSE"],
 
   // Use a plugin to recognize math
   // "markdownItPlugins": [
@@ -45,10 +45,10 @@
   // "noBanner": true,
 
   // Disable inline config comments
-  // "noInlineConfig": true,
+  "noInlineConfig": true,
 
   // Disable progress on stdout (only valid at root)
-  // "noProgress": true,
+  "noProgress": true,
 
   // Use a specific formatter (only valid at root)
   // "outputFormatters": [
@@ -56,5 +56,5 @@
   // ],
 
   // Show found files on stdout (only valid at root)
-  // "showFound": true
+  "showFound": true
 }
