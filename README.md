@@ -230,6 +230,7 @@ Before submitting a PR, you may test your code using Super-Linter:
 docker run --rm \
            -e ACTIONS_RUNNER_DEBUG=true \
            -e RUN_LOCAL=true \
+           -e DEFAULT_BRANCH=main \
            --env-file ".github/super-linter.env" \
            -v "$PWD":/tmp/lint \
            ghcr.io/super-linter/super-linter:latest
